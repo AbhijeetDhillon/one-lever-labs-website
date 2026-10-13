@@ -4,8 +4,8 @@ A responsive static company website built with HTML, CSS, and a small JavaScript
 
 ## Preview
 
-Run `python -m http.server 8080 --directory dist` from this directory, then visit http://localhost:8080.
+Open `dist/index.html` directly in your browser. No server, installation, or build step is needed.
 
 ## Deployment
 
-Upload the contents of `dist/` to any static hosting service. Google Fonts is optional; local system fonts provide a fallback. No build step or backend is required.
+The complete frontend is in `dist/`: HTML, CSS, JavaScript, and an SVG favicon. It uses system fonts and local assets with no external requests, backend, or dependencies. Contact links open the visitor's email application.
