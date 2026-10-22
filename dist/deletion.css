@@ -1,0 +1,4 @@
+.deletion-lead{font-size:19px!important;line-height:1.6!important;color:#424247!important}
+.request-steps{padding-left:24px;margin:0 0 20px}
+.request-steps li{font-size:16px;line-height:1.8;color:#424247;padding-left:5px;margin-bottom:12px}
+.request-steps li::marker{color:#b54108;font-weight:600}
