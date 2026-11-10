@@ -7,4 +7,8 @@
 .policy p{font-size:16px;line-height:1.8;color:#424247;margin-bottom:20px}
 .policy a{color:#a63d0b;overflow-wrap:anywhere;text-decoration:underline;text-underline-offset:3px}
 .policy article>p:first-child{font-size:14px;color:var(--muted);line-height:1.9;margin-bottom:30px}
+.appniva-guide .button{background:#a63d0b;color:white;text-decoration:none;margin-bottom:12px}
+.appniva-guide .button:hover{background:#8b3309}
+.appniva-guide ol,.appniva-guide ul{padding-left:1.5em;margin:0 0 20px;color:#424247;line-height:1.8}
+.appniva-guide li+li{margin-top:.6em}
 @media(max-width:650px){.policy{width:calc(100% - 40px);padding:48px 0 50px}.policy h2{font-size:25px;margin-top:34px}.policy p{font-size:16px}}
