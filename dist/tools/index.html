@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Follow an exercise plan, log sets and cardio, and see your workout history.">
+  <title>Workout Log | One Lever Labs</title>
+  <link rel="icon" href="../favicon.svg">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="workout.css">
+  <script defer src="../oll-config.js"></script>
+  <script defer src="../oll-services.js"></script>
+  <script defer src="workout.js"></script>
+</head>
+<body class="fitness">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="fitness-header"><div class="wrap"><a href="../index.html" class="brand"><img src="../favicon.svg" alt="" width="28" height="28">One Lever Labs</a><a href="#history">Workout history</a></div></header>
+  <main class="wrap fitness-main" id="main">
+    <p class="eyebrow">OLL FITNESS</p>
+    <h1>Workout Log</h1>
+    <p class="lede">Pick a workout, log your sets, and see what you did last time.</p>
+    <p id="notice" role="status"></p>
+    <section class="fitness-panel" id="session" hidden></section>
+    <section class="fitness-panel" id="plan">
+      <div class="fitness-row"><h2>Suggested workouts</h2>
+        <label>Equipment <select id="equipment"><option value="gym">Gym</option><option value="home">Home · dumbbells and bands</option></select></label>
+      </div>
+      <div id="today"></div>
+      <div class="fitness-row"><label>Plan start <input type="date" id="start-date"></label><button type="button" id="custom">Log my own workout</button></div>
+      <div id="suggestions" class="suggestions"></div>
+      <p class="fitness-note">Weekly plan adapted from Andrew Huberman’s <a href="https://www.hubermanlab.com/protocols-book">Protocols</a>.</p>
+    </section>
+    <section class="fitness-panel" id="history">
+      <h2>Workout history</h2>
+      <p id="summary"></p>
+      <div id="progress"></div>
+      <div id="entries"></div>
+      <div class="fitness-row"><button id="export" type="button">Download backup</button><label>Restore backup <input id="restore" type="file" accept=".json,application/json"></label></div>
+      <p class="fitness-note">History is saved in this browser. Download a backup to keep a copy or move it to another device.</p>
+    </section>
+    <section class="fitness-panel oll-updates" data-updates="workout"></section>
+  </main>
+</body>
+</html>

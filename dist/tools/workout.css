@@ -1,0 +1,33 @@
+.fitness { background: #f7f7f5; }
+.fitness-header { background: white; border-bottom: 1px solid #e7e5e2; }
+.fitness-header .wrap { display: flex; align-items: center; justify-content: space-between; min-height: 64px; gap: 12px; }
+.fitness-main { max-width: 840px; padding-block: 50px; }
+.fitness h1 { font-size: clamp(2.8rem, 8vw, 4.5rem); margin-bottom: 12px; }
+.fitness h2 { font-size: clamp(1.5rem, 4vw, 2rem); margin: 0 0 12px; }
+.fitness h3 { font-size: 1.15rem; margin-bottom: 6px; }
+.lede { font-size: 1.15rem; color: #57575b; }
+.fitness-panel { background: white; border: 1px solid #e7e5e2; border-radius: 22px; margin-block: 20px; padding: clamp(16px, 4vw, 32px); }
+.fitness-row { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-block: 12px; }
+.fitness label { display: grid; gap: 5px; font-size: .9rem; }
+.fitness input, .fitness select, .fitness button { min-height: 44px; max-width: 100%; font: inherit; padding: 8px 12px; border-radius: 10px; border: 1px solid #c9c6c2; background: white; color: inherit; }
+.fitness input[type=checkbox] { min-height: auto; }
+.fitness .oll-updates label:has(input[type=checkbox]) { display: flex; align-items: center; }
+.fitness button { cursor: pointer; font-weight: 600; }
+.fitness button:hover { background: #f7eee8; }
+.fitness button:disabled { opacity: .55; cursor: default; }
+.fitness button.primary { background: #a63c12; color: white; border-color: #a63c12; }
+.fitness button.primary:hover { background: #86300e; }
+.fitness button:focus-visible, .fitness input:focus-visible, .fitness select:focus-visible { outline: 2px solid #a63c12; outline-offset: 3px; }
+.today { background: #fff1e7; border-radius: 14px; padding: 16px; }
+.suggestions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 205px), 1fr)); gap: 10px; }
+.suggestion { border: 1px solid #e7e5e2; border-radius: 14px; padding: 14px; }
+.suggestion p { margin-bottom: 8px; line-height: 1.5; }
+.fitness-note { color: #57575b; font-size: .9rem; line-height: 1.5; margin: 12px 0 0; }
+.fitness-note a { text-decoration: underline; }
+.exercise, .history-entry { border-top: 1px solid #e7e5e2; padding-block: 14px; }
+.history-entry summary { cursor: pointer; padding-block: 8px; overflow-wrap: anywhere; }
+.set-row { display: flex; align-items: end; flex-wrap: wrap; gap: 8px; margin-block: 10px; }
+.set-row strong { flex-basis: 100%; }
+.set-row input { width: 100px; }
+.timer { font-variant-numeric: tabular-nums; font-weight: 650; }
+.fitness-add { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; }
