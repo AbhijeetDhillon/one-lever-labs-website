@@ -17,6 +17,3 @@
 .oll-updates input[type=email] { padding: 10px; font: inherit; max-width: 100%; }
 .oll-updates button { font: inherit; cursor: pointer; }
 .oll-analytics { color: var(--muted); font-size: .875rem; margin-top: 20px; }
-.logo-symbol { width: 30px; height: 30px; }
-.logo-symbol img, .company-logo img { display: block; position: static; width: 100%; height: auto; mix-blend-mode: normal; }
-.company-logo { width: clamp(100px, 17vw, 152px); aspect-ratio: 1; margin: 36px auto 28px; }
