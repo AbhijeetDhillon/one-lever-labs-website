@@ -11,18 +11,33 @@
   <meta name="theme-color" content="#f7f7f5">
   <script defer src="install.js"></script>
   <link rel="stylesheet" href="../styles.css?v=5">
-  <link rel="stylesheet" href="workout.css?v=5">
+  <link rel="stylesheet" href="workout.css?v=13">
   <script defer src="../oll-config.js"></script>
   <script defer src="../oll-services.js"></script>
 </head>
-<body class="fitness">
+<body class="fitness tools-page">
   <a class="skip" href="#main">Skip to content</a>
   <header class="fitness-header"><div class="wrap"><a href="../index.html" class="brand">One Lever Labs</a></div></header>
   <main class="wrap fitness-main" id="main">
     <h1>Tools</h1>
+    <p class="lede">Plan your training and estimate your daily calorie needs.</p>
     <div class="tool-cards">
-      <article class="fitness-panel"><h2>Workout Plan</h2><p>Seven days of workouts with gym and home options.</p><a class="button" href="workout.html" data-event="workout_open">Open Workout Plan</a></article>
-      <article class="fitness-panel"><h2>BMR &amp; Daily Calories</h2><p>Estimate resting calories, maintenance, and a daily target.</p><a class="button" href="bmr.html" data-event="bmr_open">Open BMR Calculator</a></article>
+      <article class="fitness-panel tool-card">
+        <div>
+          <h2>Workout Plan</h2>
+          <p>Follow a seven-day Gym or Home plan, swap exercises, and track your progress in a free 12-week workbook.</p>
+          <a class="tool-source" href="https://www.hubermanlab.com/protocols-book">Adapted from <cite>Protocols</cite></a>
+        </div>
+        <a class="button" href="workout.html" data-event="workout_open">Open Workout Plan</a>
+      </article>
+      <article class="fitness-panel tool-card">
+        <div>
+          <h2>BMR &amp; Daily Calories</h2>
+          <p>Estimate resting and maintenance calories, then set a daily target based on your body composition and activity.</p>
+          <a class="tool-source" href="bmr.html#bmr-method">Katch–McArdle equation</a>
+        </div>
+        <a class="button" href="bmr.html" data-event="bmr_open">Open BMR Calculator</a>
+      </article>
     </div>
   </main>
 </body>

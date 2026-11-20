@@ -1,4 +1,5 @@
 const workbookConsentVersion = 'v1';
+const workbookDailyLimit = 75;
 
 function checkWorkbookSetup() {
   const settings = workbookSettings_();
@@ -26,6 +27,8 @@ function doPost(event) {
   const email = String(input.email || '').trim();
   const equipment = input.equipment;
   const optIn = input.marketingOptIn;
+  const download = input.delivery === 'download';
+  const emailCopy = input.delivery === 'email-copy';
   if (email.length > 254 || !/^[a-z0-9][a-z0-9.!#$%&'*+/=?^_\x60{|}~-]*@[a-z0-9-]+(?:\.[a-z0-9-]+)+$/i.test(email)
       || !['gym', 'home'].includes(equipment) || !['yes', 'no'].includes(optIn)) {
     return workbookReply_(origin, nonce, 'invalid');
@@ -45,24 +48,31 @@ function doPost(event) {
   try {
     const cache = CacheService.getScriptCache();
     const previous = cache.get(key);
-    if (previous === 'sent') {
+    if (!download && previous === 'sent') {
       console.info('Workbook email was already accepted for this request.');
       return workbookReply_(origin, nonce, 'sent');
     }
+    if (emailCopy && previous !== 'recorded') return workbookReply_(origin, nonce, 'unavailable');
 
     const properties = PropertiesService.getScriptProperties();
     const today = new Date().toISOString().slice(0, 10);
-    const dayUsage = JSON.parse(properties.getProperty('WORKBOOK_DAILY_USAGE') || '{}');
+    const usageKey = download ? 'WORKBOOK_DAILY_DOWNLOAD_USAGE' : 'WORKBOOK_DAILY_USAGE';
+    const dayUsage = JSON.parse(properties.getProperty(usageKey) || '{}');
     const used = dayUsage.date === today ? dayUsage.count : 0;
-    if (used >= 75 || MailApp.getRemainingDailyQuota() < 1) {
-      console.warn('Workbook delivery reached its daily sending limit.');
+    if ((!download && (used >= workbookDailyLimit || MailApp.getRemainingDailyQuota() < 1))
+        || (download && !previous && used >= workbookDailyLimit)) {
+      console.warn('Workbook delivery reached its daily limit.');
       return workbookReply_(origin, nonce, 'busy');
     }
 
     const planName = equipment === 'gym' ? 'Gym' : 'Home';
     stage = 'read the workbook from Drive';
     const attachment = workbookAttachment_(settings.fileIds[equipment], equipment);
-    if (previous !== 'recorded') {
+    if (!previous) {
+      if (download) {
+        stage = 'update the download count';
+        properties.setProperty(usageKey, JSON.stringify({ date: today, count: used + 1 }));
+      }
       stage = 'save the Google Forms response';
       const { form, fields } = workbookFields_(settings.formId);
       const response = form.createResponse()
@@ -75,8 +85,13 @@ function doPost(event) {
       cache.put(key, 'recorded', 600);
     }
 
+    if (download) {
+      stage = 'prepare the workbook download';
+      return workbookReply_(origin, nonce, 'ready', Utilities.base64Encode(attachment.getBytes()));
+    }
+
     stage = 'update the daily send count';
-    properties.setProperty('WORKBOOK_DAILY_USAGE', JSON.stringify({ date: today, count: used + 1 }));
+    properties.setProperty(usageKey, JSON.stringify({ date: today, count: used + 1 }));
     stage = 'send the email through MailApp';
     deliveryAttempt = { at: new Date().toISOString(), plan: planName, outcome: 'failed' };
     sendWorkbookEmail_(email, planName, attachment);
@@ -165,8 +180,9 @@ function workbookAttachment_(fileId, equipment) {
   return file.getBlob().setName(filename);
 }
 
-function workbookReply_(origin, nonce, status) {
+function workbookReply_(origin, nonce, status, workbook) {
   const result = { channel: 'oll-workbook', nonce, status };
+  if (workbook) result.workbook = workbook;
   return HtmlService.createHtmlOutput('<script>window.top.postMessage(' + JSON.stringify(result) + ',' + JSON.stringify(origin) + ');</script>')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }

@@ -110,27 +110,49 @@
 .result-preview li + li { margin-top: 8px; }
 @media (min-width: 800px) { .bmr-page .calc-result { position: sticky; top: 20px; } }
 .fitness [hidden] { display: none; }
-.weekly-plan { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.plan-day { padding: clamp(14px, 2.5vw, 22px); min-width: 0; display: flex; flex-direction: column; align-items: start; }
-.plan-day-heading { display: flex; align-items: baseline; gap: 8px 12px; justify-content: space-between; flex-wrap: wrap; width: 100%; }
-.plan-day-heading .plan-day-number { margin: 0 0 6px; font-size: .875rem; font-weight: 650; color: #a63c12; }
-.plan-day-type { font-size: .875rem; color: #57575b; }
-.plan-day h3 { font-size: 1.3rem; }
-.plan-day-description { color: #454347; }
-.plan-day .plan-prescription { font-weight: 650; margin-block: 10px; }
-.plan-day button { margin-top: auto; }
+.weekly-plan { gap: 8px; }
+.plan-day { min-width: 0; border: 1px solid #e7e5e2; border-radius: 14px; }
+.plan-day[open] { border-color: #e6c6b4; }
+.plan-day-heading {
+  display: grid;
+  grid-template-columns: 3.2rem minmax(0, 1fr) .8rem;
+  align-items: center;
+  gap: 10px;
+  padding: 13px clamp(12px, 2.5vw, 18px);
+  min-height: 64px;
+  list-style: none;
+  cursor: pointer;
+  border-radius: inherit;
+}
+.plan-day-heading::-webkit-details-marker { display: none; }
+.plan-day-heading:hover, .plan-day[open] > .plan-day-heading { background: #fff5ed; }
+.plan-day[open] > .plan-day-heading { border-radius: 13px 13px 0 0; }
+.plan-day-heading::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border: solid #8b3817;
+  border-width: 0 2px 2px 0;
+  transform: translateY(-2px) rotate(45deg);
+}
+.plan-day[open] > .plan-day-heading::after { transform: translateY(2px) rotate(225deg); }
+.plan-day-number { font-size: .875rem; font-weight: 700; color: #8b3817; }
+.plan-day-title { display: grid; gap: 3px; font-weight: 700; line-height: 1.25; }
+.plan-day-type { font-size: .875rem; font-weight: 500; color: #57575b; }
+.plan-day-body { padding: 12px clamp(12px, 2.5vw, 18px) 14px; }
+.plan-day-description, .plan-effort { color: #454347; font-size: .925rem; line-height: 1.5; margin: 0 0 6px; }
+.plan-effort a, .plan-resources a, .plan-video { color: #8b3817; text-decoration: underline; text-underline-offset: 3px; }
+.plan-video { display: inline-flex; align-items: center; min-height: 44px; font-size: .875rem; font-weight: 650; }
 .plan-exercises { padding-inline-start: 1.4em; width: 100%; margin: 5px 0; }
 .plan-exercises li { padding-block: 6px; margin: 0; border-bottom: 1px solid #eeeae7; }
 .plan-exercises li span { display: block; color: #57575b; font-size: .875rem; }
-.set-guide { margin-block: 22px; padding: clamp(13px, 3vw, 22px); background: #f5f5f7; border-radius: 14px; }
-.set-guide > p { line-height: 1.5; }
+.set-guide { margin: 8px 0 4px; padding: 0 10px; background: #f5f5f7; border-radius: 10px; }
+.set-guide > summary { padding-block: 12px; font-size: .925rem; font-weight: 650; cursor: pointer; }
+.set-guide > p { margin: 8px 0 0; padding-bottom: 10px; }
 .set-guide-table { overflow-x: auto; }
 .set-guide table { border-collapse: collapse; width: 100%; font-size: .925rem; }
 .set-guide th, .set-guide td { text-align: left; border-bottom: 1px solid #dedee2; padding: 8px 6px; }
 .set-guide tbody th { font-weight: 650; }
-@media (max-width: 650px) {
-  .weekly-plan { grid-template-columns: minmax(0, 1fr); }
-}
 .measurement-help { background: #f5f5f7; border-radius: 10px; padding: 10px 12px; color: #454347; font-size: .925rem; line-height: 1.5; }
 .measurement-help summary, .training-terms summary { cursor: pointer; font-weight: 650; }
 .measurement-help p, .measurement-help ol { margin: 8px 0 0; }
@@ -149,15 +171,13 @@
 .training-terms dl > div + div { margin-top: 8px; }
 .training-terms dt { font-weight: 650; }
 .training-terms dd { margin: 0; color: #454347; }
-.plan-reference .set-guide { margin-block: 12px 0; }
+.plan-resources { display: grid; justify-items: start; margin-top: 8px; font-size: .875rem; }
+.plan-resources a { display: inline-flex; align-items: center; gap: .25em; min-height: 36px; }
 #tracker-request button { justify-self: start; }
 #get-tracker { scroll-margin-top: 20px; }
 @media (min-width: 760px) {
   .workout-plan-layout { grid-template-columns: minmax(0, 1fr) minmax(280px, 35%); align-items: start; }
   .plan-reference { position: sticky; top: 16px; max-height: calc(100dvh - 32px); overflow: auto; }
-}
-@media (max-width: 759px) {
-  .plan-reference { grid-row: 1; }
 }
 .fitness input, .fitness select { min-width: 0; }
 .fitness label, .fitness-panel, .set-guide-table { min-width: 0; }
@@ -175,7 +195,6 @@
   .calc-form .pair > label input { width: 100%; }
   .fitness .calc-form > .primary, #tracker-request button { width: 100%; }
   .fitness .workout-education .button, .tool-cards .button { min-height: 44px; }
-  .plan-reference .set-guide { padding: 12px; }
   .set-guide table { font-size: .875rem; }
   .set-guide th, .set-guide td { padding: 7px 4px; }
   .fitness-row > label, .fitness-add > label { max-width: 100%; }
@@ -190,7 +209,6 @@
   .fitness-panel { padding: 12px; }
   .bmr-intro h1, .fitness h1 { font-size: 2.5rem; }
 }
-.plan-day .plan-steps { margin: 8px 0 0; color: #57575b; font-size: .9rem; }
 .plan-intro { margin-bottom: 12px; line-height: 1.5; color: #454347; }
 .cardio-exercise { list-style: none; padding-inline-start: 0; }
 
@@ -223,3 +241,44 @@
 .workout-page #plan > .fitness-row h2 { margin-bottom: 0; }
 .workout-page #tracker-request { margin-top: 12px; gap: 10px; }
 #tracker-status:empty { display: none; }
+
+.tools-page .fitness-main { max-width: 1000px; }
+.tools-page .lede { margin: 0 0 22px; }
+.tool-card { display: grid; align-content: space-between; gap: 23px; min-width: 0; }
+.tool-card h2 { font-size: clamp(1.4rem, 3vw, 1.85rem); margin-bottom: 8px; }
+.tool-card p { color: #454347; max-width: 38ch; margin: 0 0 12px; }
+.tool-source {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .3em;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid #eccfbf;
+  border-radius: 999px;
+  background: #fff5ed;
+  color: #8b3817;
+  font-size: .875rem;
+  font-weight: 650;
+}
+.tool-source:hover { text-decoration: underline; }
+.tool-card > .button { justify-self: start; min-height: 44px; }
+#bmr-method { scroll-margin-top: 16px; }
+.workout-page .workout-education p { margin: 0; }
+.plan-picker { min-width: 0; padding: 0; margin: 0; border: 0; }
+.plan-picker legend { padding: 0; margin-bottom: 3px; color: #454347; font-size: .875rem; }
+.plan-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; padding: 3px; background: #f4eee9; border-radius: 12px; }
+.fitness .plan-options label { position: relative; display: block; cursor: pointer; font-size: .925rem; }
+.fitness .plan-options input { position: absolute; width: 1px; height: 1px; min-height: 0; opacity: 0; padding: 0; }
+.plan-options span { display: grid; place-items: center; min-height: 44px; padding-inline: 14px; border-radius: 9px; font-weight: 650; }
+.plan-options input:checked + span { background: #fff; color: #8b3817; box-shadow: 0 0 0 1px #e4c8b8; }
+.plan-options input:focus-visible + span, .plan-day-heading:focus-visible, .set-guide summary:focus-visible, .tool-source:focus-visible { outline: 2px solid #a63c12; outline-offset: 2px; }
+.workout-page #plan .plan-picker { flex: 0 1 auto; }
+.plan-equipment-note { margin: -4px 0 12px; }
+.workout-email .plan-picker { max-width: 260px; }
+.workout-email .workbook-download { justify-self: start; min-height: 44px; justify-content: center; }
+@media (max-width: 480px) {
+  .workout-page #plan .plan-picker, .workout-email .plan-picker { flex-basis: 100%; max-width: none; }
+  .workout-email .workbook-download, .tool-card > .button { width: 100%; justify-content: center; }
+  .plan-day-heading { grid-template-columns: 2.8rem minmax(0, 1fr) .65rem; gap: 6px; }
+}

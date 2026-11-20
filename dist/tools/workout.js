@@ -92,7 +92,18 @@
 
   const dailyStepTarget = "8,000–10,000 steps";
   const $ = (id) => document.getElementById(id);
-  const equipment = $("equipment");
+  const planOptions = Array.from(document.querySelectorAll("[data-plan-option]"));
+  let equipment = planOptions.find(option => option.checked)?.value || "gym";
+  const cardioCues = {
+    0: "Keep the effort steady enough to talk comfortably.",
+    4: "Aim for a sustained, brisk effort. At the harder end, expect to pause for breath after a few words.",
+    6: "The hard intervals should feel very challenging. Give yourself time to catch your breath between efforts."
+  };
+  const strengthVideos = {
+    1: ["Lower-body demonstrations", "day-2-major-lower-body-muscles"],
+    3: ["Chest, back, and core demonstrations", "day-4-major-torso-muscles"],
+    5: ["Shoulders and arms demonstrations", "day-7-shoulders-biceps-triceps"]
+  };
 
   function node(tag, text, className) {
     const element = document.createElement(tag);
@@ -111,8 +122,8 @@
   }
 
   function exerciseRow(original, dayIndex, exerciseIndex, target) {
-    const alternatives = (equipment.value === "home" ? homeSubstitutions : gymSubstitutions)[dayIndex][exerciseIndex];
-    const key = [equipment.value, dayIndex, exerciseIndex].join(":");
+    const alternatives = (equipment === "home" ? homeSubstitutions : gymSubstitutions)[dayIndex][exerciseIndex];
+    const key = [equipment, dayIndex, exerciseIndex].join(":");
     const selected = alternatives.includes(choices[key]) ? choices[key] : original;
     const row = node("li");
     const select = node("select", "", "exercise-choice");
@@ -144,42 +155,92 @@
     return row;
   }
 
+  function makeSetGuide() {
+    const guide = node("details", "", "set-guide");
+    const table = node("table");
+    const head = node("thead");
+    const headings = node("tr");
+    for (const label of ["Set", "Load", "Reps", "Rest after"]) {
+      const cell = node("th", label);
+      cell.scope = "col";
+      headings.append(cell);
+    }
+    head.append(headings);
+    const body = node("tbody");
+    for (const set of sets) {
+      const row = node("tr");
+      const name = node("th", set.name);
+      name.scope = "row";
+      row.append(name, node("td", Math.round(set.factor * 100) + "%"), node("td", set.reps), node("td", set.rest));
+      body.append(row);
+    }
+    table.append(head, body);
+    guide.append(node("summary", "Sets, reps, and rest"));
+    const tableWrap = node("div", "", "set-guide-table");
+    tableWrap.append(table);
+    guide.append(tableWrap, node("p", "Choose a working weight you can lift for 6–12 controlled reps. For bodyweight warm-ups, use an easier variation.", "fitness-note"));
+    return guide;
+  }
+
   function renderPlan() {
-    $("tracker-plan").textContent = "Selected plan: " + (equipment.value === "home" ? "Home" : "Gym");
-    $("suggestions").replaceChildren(...week.map((day, index) => {
+    for (const option of planOptions) option.checked = option.value === equipment;
+    trackerButton.textContent = "Get the " + (equipment === "home" ? "Home" : "Gym") + " workbook";
+    $("home-equipment").hidden = equipment !== "home";
+    const schedule = $("suggestions");
+    const openDays = Array.from(schedule.children, card => ({
+      day: card.open,
+      sets: card.querySelector(".set-guide")?.open
+    }));
+    schedule.replaceChildren(...week.map((day, index) => {
       const details = dayDetails[index];
-      const card = node("article", "", "suggestion plan-day");
-      const heading = node("div", "", "plan-day-heading");
-      heading.append(node("p", "Day " + (index + 1), "plan-day-number"), node("span", details.type, "plan-day-type"));
-      card.append(heading, node("h3", day.name), node("p", details.description, "plan-day-description"));
-      const exercises = day[equipment.value];
-      if (day.cardio) card.append(node("p", day.cardio, "plan-prescription"));
+      const exercises = day[equipment];
+      const card = node("details", "", "plan-day");
+      card.open = openDays[index]?.day ?? index === 0;
+      const summary = node("summary", "", "plan-day-heading");
+      const heading = node("span", "", "plan-day-title");
+      const target = day.cardio || (exercises.length ? "Strength · " + exercises.length + " exercises" : details.type);
+      heading.append(node("span", day.name), node("span", target, "plan-day-type"));
+      summary.append(node("span", "Day " + (index + 1), "plan-day-number"), heading);
+      const body = node("div", "", "plan-day-body");
+      if (index !== 0) body.append(node("p", details.description, "plan-day-description"));
+      if (day.cardio) {
+        const cue = node("p", cardioCues[index], "plan-effort");
+        const source = node("a", "How to gauge effort");
+        source.href = "https://www.cdc.gov/physical-activity-basics/measuring/index.html";
+        cue.append(" ", source);
+        body.append(cue);
+      }
+      if (details.type === "Strength") {
+        const guide = makeSetGuide();
+        guide.open = Boolean(openDays[index]?.sets);
+        body.append(guide);
+      }
       if (exercises.length) {
         const list = node(day.cardio ? "ul" : "ol", "", day.cardio ? "plan-exercises cardio-exercise" : "plan-exercises");
         exercises.forEach((exercise, exerciseIndex) => {
           list.append(exerciseRow(exercise, index, exerciseIndex, details.targets?.[exerciseIndex]));
         });
-        card.append(list);
-        if (!day.cardio) card.append(node("p", "Per exercise · 2 warm-up sets, 2 working sets", "plan-prescription"));
+        body.append(list);
       }
-      card.append(node("p", dailyStepTarget, "plan-steps"));
+      if (strengthVideos[index]) {
+        const [title, anchor] = strengthVideos[index];
+        const video = node("a", "Watch " + title.toLowerCase(), "plan-video");
+        video.href = "https://www.hubermanlab.com/protocols-resources#" + anchor;
+        body.append(video);
+      }
+      card.append(summary, body);
       return card;
     }));
   }
 
-  $("set-guide-rows").replaceChildren(...sets.map((set) => {
-    const row = node("tr");
-    const name = node("th", set.name);
-    name.scope = "row";
-    row.append(name, node("td", Math.round(set.factor * 100) + "%"), node("td", set.reps), node("td", set.rest));
-    return row;
-  }));
-
+  $("daily-steps").textContent = dailyStepTarget;
   if (window.matchMedia("(max-width: 759px)").matches) document.querySelector(".training-terms").open = false;
 
   const trackerForm = $("tracker-request");
   const trackerStatus = $("tracker-status");
   const trackerButton = $("request-tracker");
+  const trackerDownload = $("workbook-download");
+  let workbookUrl;
   const trackerEndpoint = window.ollConfig?.trackerRequestEndpoint;
   let endpoint;
   try {
@@ -195,10 +256,7 @@
     trackerStatus.textContent = "Open this page on the website to request the workbook.";
   }
 
-  trackerForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    if (trackerButton.disabled) return;
-
+  function postWorkbookRequest(fields, onResult) {
     const nonce = Array.from(crypto.getRandomValues(new Uint8Array(16)), byte => byte.toString(16).padStart(2, "0")).join("");
     const frame = node("iframe");
     frame.name = "oll-workbook-" + nonce;
@@ -209,14 +267,8 @@
     request.method = "post";
     request.action = endpoint;
     request.target = frame.name;
-    const fields = {
-      email: trackerForm.elements.email.value.trim(),
-      equipment: equipment.value,
-      marketingOptIn: "no",
-      parentOrigin: location.origin,
-      nonce
-    };
-    for (const [name, value] of Object.entries(fields)) {
+    const parameters = { ...fields, marketingOptIn: "no", parentOrigin: location.origin, nonce };
+    for (const [name, value] of Object.entries(parameters)) {
       const field = node("input");
       field.type = "hidden";
       field.name = name;
@@ -224,38 +276,80 @@
       request.append(field);
     }
 
-    function finish(status) {
+    function finish(result) {
       clearTimeout(timeout);
       window.removeEventListener("message", receive);
       request.remove();
       frame.remove();
-      trackerButton.disabled = false;
-      if (status === "sent") {
-        trackerStatus.textContent = "Your workbook was sent. Check your inbox.";
-        trackerForm.reset();
-      } else if (status === "invalid") {
-        trackerStatus.textContent = "Check your email address and try again.";
-      } else if (status === "busy") {
-        trackerStatus.textContent = "Workbook delivery is busy. Please try again later.";
-      } else {
-        trackerStatus.textContent = "We could not confirm delivery. Please try again.";
-      }
+      onResult(result);
     }
 
     function receive(message) {
       const googleOrigin = /^https:\/\/(?:script\.google\.com|[a-z0-9.-]+\.googleusercontent\.com|googleusercontent\.com)$/i;
       if (!googleOrigin.test(message.origin) || message.data?.channel !== "oll-workbook" || message.data.nonce !== nonce) return;
-      finish(message.data.status);
+      finish(message.data);
     }
 
-    trackerButton.disabled = true;
-    trackerStatus.textContent = "Your workbook will arrive in your inbox shortly.";
-    const timeout = setTimeout(() => finish("timeout"), 30000);
+    const timeout = setTimeout(() => finish({ status: "timeout" }), 30000);
     window.addEventListener("message", receive);
     document.body.append(frame, request);
     request.submit();
+  }
+
+  function showWorkbook(encoded, plan) {
+    if (typeof encoded !== "string") return false;
+    try {
+      const bytes = Uint8Array.from(atob(encoded), character => character.charCodeAt(0));
+      if (bytes[0] !== 80 || bytes[1] !== 75 || bytes[2] !== 3 || bytes[3] !== 4) return false;
+      workbookUrl = URL.createObjectURL(new Blob([bytes], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      }));
+      trackerDownload.href = workbookUrl;
+      trackerDownload.download = "oll-12-week-workout-" + plan.toLowerCase() + ".xlsx";
+      trackerDownload.textContent = "Download the " + plan + " workbook (.xlsx)";
+      trackerDownload.hidden = false;
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  trackerForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (trackerButton.disabled) return;
+    const email = trackerForm.elements.email.value.trim();
+    const fields = { email, equipment };
+    const plan = equipment === "home" ? "Home" : "Gym";
+    if (workbookUrl) URL.revokeObjectURL(workbookUrl);
+    workbookUrl = undefined;
+    trackerDownload.hidden = true;
+    trackerDownload.removeAttribute("href");
+    trackerButton.disabled = true;
+    trackerStatus.textContent = "Preparing your " + plan + " workbook…";
+    postWorkbookRequest({ ...fields, delivery: "download" }, (result) => {
+      trackerButton.disabled = false;
+      if (result.status === "ready" && showWorkbook(result.workbook, plan)) {
+        trackerStatus.textContent = "Your " + plan + " workbook is ready.";
+        if (trackerForm.elements.email.value.trim() === email) trackerForm.elements.email.value = "";
+        postWorkbookRequest({ ...fields, delivery: "email-copy" }, () => {});
+      } else if (result.status === "sent") {
+        trackerStatus.textContent = "Check your inbox for the " + plan + " workbook.";
+        if (trackerForm.elements.email.value.trim() === email) trackerForm.elements.email.value = "";
+      } else if (result.status === "invalid") {
+        trackerStatus.textContent = "Check your email address and try again.";
+      } else if (result.status === "busy") {
+        trackerStatus.textContent = "Workbook delivery is busy. Please try again later.";
+      } else {
+        trackerStatus.textContent = "We could not prepare your workbook. Please try again.";
+      }
+    });
   });
 
-  equipment.addEventListener("change", renderPlan);
+  for (const option of planOptions) {
+    option.addEventListener("change", () => {
+      equipment = option.value;
+      renderPlan();
+    });
+  }
   renderPlan();
 })();
