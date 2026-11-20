@@ -114,7 +114,7 @@ function sendWorkbookEmail_(email, planName, attachment) {
     body: [
       `Here is the ${planName} workbook you requested. It has one sheet. Swipe across the 12 week columns and use the dropdown beside each exercise to choose an alternative for that week.`,
       'The workout plan is adapted from the exercise protocol in Andrew Huberman’s book, Protocols: An Operating Manual for the Human Body. I highly recommend the book for a deeper look at the exercises and the reasoning behind the program.',
-      'Buy Protocols on Amazon (paid link): https://link.amazon/B0f1LnR5Y',
+      'Buy Protocols on Amazon (paid link): https://www.amazon.com/dp/1668032147?tag=oneleverlabs-20',
       'As an Amazon Associate I earn from qualifying purchases.',
       'One Lever Labs'
     ].join('\n\n'),
