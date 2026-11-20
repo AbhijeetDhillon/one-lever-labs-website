@@ -67,7 +67,8 @@ function doPost(event) {
       body: [
         'Here is the workout workbook you requested. It includes Gym and Home plans, exercise alternatives, and space to track your training.',
         'The workout plan is adapted from the exercise protocol in Andrew Huberman’s book, Protocols: An Operating Manual for the Human Body. I highly recommend the book for a deeper look at the exercises and the reasoning behind the program.',
-        'Read more about Protocols: https://www.hubermanlab.com/protocols-book',
+        'Buy Protocols on Amazon (paid link): https://link.amazon/B0f1LnR5Y',
+        'As an Amazon Associate I earn from qualifying purchases.',
         'One Lever Labs'
       ].join('\n\n'),
       name: 'One Lever Labs',
