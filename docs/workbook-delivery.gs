@@ -63,8 +63,13 @@ function doPost(event) {
     properties.setProperty('WORKBOOK_DAILY_USAGE', JSON.stringify({ date: today, count: used + 1 }));
     MailApp.sendEmail({
       to: email,
-      subject: 'Your free One Lever Labs workout workbook',
-      body: 'Here is the workout workbook you requested. It includes the Gym and Home plans, with exercise dropdowns and space to track your training.\n\nOne Lever Labs',
+      subject: 'Your free workout workbook',
+      body: [
+        'Here is the workout workbook you requested. It includes Gym and Home plans, exercise alternatives, and space to track your training.',
+        'The workout plan is adapted from the exercise protocol in Andrew Huberman’s book, Protocols: An Operating Manual for the Human Body. I highly recommend the book for a deeper look at the exercises and the reasoning behind the program.',
+        'Read more about Protocols: https://www.hubermanlab.com/protocols-book',
+        'One Lever Labs'
+      ].join('\n\n'),
       name: 'One Lever Labs',
       attachments: [attachment]
     });
