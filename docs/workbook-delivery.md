@@ -10,6 +10,8 @@ The workout page uses the Gym or Home plan selection to send the matching 12-wee
 
 Submit a Gym request and a Home request using an inbox you control. Verify that each email contains the matching attachment, and check that the Form Responses entries record the selected plan, `workout-plan`, and No. If a linked spreadsheet is needed, choose **Responses → Link to Sheets** in Google Forms. The same form request is deduplicated for ten minutes on a best-effort basis. The sender caps delivery attempts at 75 per UTC day and also checks the Google account’s remaining quota.
 
+If a response appears in Forms without an email, open **Executions** in Apps Script and expand the matching `doPost` run. The logs distinguish a send accepted by MailApp, a repeat request, a sending limit, and the step where a request failed. An accepted send can still be filtered or rejected by the recipient's mail provider. Check the recipient's Spam folder and the sender's mailbox for a delivery failure notice.
+
 Use responses with a `Yes` marketing opt-in to build the marketing audience, and use a mailing platform to manage confirmation and unsubscribe requests. Workbook delivery is sent to everyone who requests it, regardless of their opt-in.
 
 [Google Apps Script web app deployment](https://developers.google.com/apps-script/guides/web)
