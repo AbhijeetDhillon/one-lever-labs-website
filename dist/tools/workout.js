@@ -249,7 +249,7 @@
     }
 
     trackerButton.disabled = true;
-    trackerStatus.textContent = "Sending your workbook…";
+    trackerStatus.textContent = "Your workbook will arrive in your inbox shortly.";
     const timeout = setTimeout(() => finish("timeout"), 30000);
     window.addEventListener("message", receive);
     document.body.append(frame, request);
