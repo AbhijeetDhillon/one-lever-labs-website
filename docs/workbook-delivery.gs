@@ -77,20 +77,7 @@ function doPost(event) {
     stage = 'update the daily send count';
     properties.setProperty('WORKBOOK_DAILY_USAGE', JSON.stringify({ date: today, count: used + 1 }));
     stage = 'send the email through MailApp';
-    MailApp.sendEmail({
-      to: email,
-      subject: `Your free 12-week ${planName} workout workbook`,
-      body: [
-        `Here is the ${planName} workbook you requested. It has one sheet. Swipe across the 12 week columns and use the dropdown beside each exercise to choose an alternative for that week.`,
-        'The workout plan is adapted from the exercise protocol in Andrew Huberman’s book, Protocols: An Operating Manual for the Human Body. I highly recommend the book for a deeper look at the exercises and the reasoning behind the program.',
-        'Buy Protocols on Amazon (paid link): https://link.amazon/B0f1LnR5Y',
-        'As an Amazon Associate I earn from qualifying purchases.',
-        'One Lever Labs'
-      ].join('\n\n'),
-      name: 'One Lever Labs',
-      attachments: [attachment]
-    });
-    console.info(`MailApp accepted the ${planName} workbook email for sending.`);
+    sendWorkbookEmail_(email, planName, attachment);
     stage = 'cache the successful send';
     cache.put(key, 'sent', 600);
     return workbookReply_(origin, nonce, 'sent');
@@ -105,6 +92,23 @@ function doPost(event) {
   } finally {
     lock.releaseLock();
   }
+}
+
+function sendWorkbookEmail_(email, planName, attachment) {
+  MailApp.sendEmail({
+    to: email,
+    subject: `Your free 12-week ${planName} workout workbook`,
+    body: [
+      `Here is the ${planName} workbook you requested. It has one sheet. Swipe across the 12 week columns and use the dropdown beside each exercise to choose an alternative for that week.`,
+      'The workout plan is adapted from the exercise protocol in Andrew Huberman’s book, Protocols: An Operating Manual for the Human Body. I highly recommend the book for a deeper look at the exercises and the reasoning behind the program.',
+      'Buy Protocols on Amazon (paid link): https://link.amazon/B0f1LnR5Y',
+      'As an Amazon Associate I earn from qualifying purchases.',
+      'One Lever Labs'
+    ].join('\n\n'),
+    name: 'One Lever Labs',
+    attachments: [attachment]
+  });
+  console.info(`MailApp accepted the ${planName} workbook email for sending.`);
 }
 
 function workbookSettings_() {

@@ -12,6 +12,18 @@ Submit a Gym request and a Home request using an inbox you control. Verify that 
 
 If a response appears in Forms without an email, open **Executions** in Apps Script and expand the matching `doPost` run. The logs distinguish a send accepted by MailApp, a repeat request, a sending limit, and the step where a request failed. An accepted send can still be filtered or rejected by the recipient's mail provider. Check the recipient's Spam folder and the sender's mailbox for a delivery failure notice.
 
+The editor runs the saved source. The public `/exec` URL runs the version selected in **Manage deployments**. After updating `Code.gs`, edit the existing web app deployment and select **New version** to make the latest logs available to website requests. Submit one request with an address and plan combination you have not tested in the past ten minutes.
+
+If MailApp accepts the website request and the email remains missing, compare it with the exact same email sent from the editor. Temporarily add the function below after deploying the current version. Replace the placeholder with an inbox you control, run the function from the editor, and remove it from the editor afterward.
+
+```javascript
+function testProductionWorkbookEmail() {
+  const to = 'YOUR_EMAIL_HERE';
+  const attachment = workbookAttachment_(workbookSettings_().fileIds.gym, 'gym');
+  sendWorkbookEmail_(to, 'Gym', attachment);
+}
+```
+
 Use responses with a `Yes` marketing opt-in to build the marketing audience, and use a mailing platform to manage confirmation and unsubscribe requests. Workbook delivery is sent to everyone who requests it, regardless of their opt-in.
 
 [Google Apps Script web app deployment](https://developers.google.com/apps-script/guides/web)
