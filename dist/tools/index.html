@@ -3,42 +3,32 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Follow an exercise plan, log sets and cardio, and see your workout history.">
-  <title>Workout Log | One Lever Labs</title>
+  <meta name="description" content="One Lever Labs tools for planning workouts and estimating daily calories.">
+  <title>Tools | One Lever Labs</title>
   <link rel="icon" href="../favicon.svg">
-  <link rel="stylesheet" href="../styles.css">
-  <link rel="stylesheet" href="workout.css">
+  <link rel="manifest" href="app.webmanifest">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="theme-color" content="#f7f7f5">
+  <script defer src="install.js"></script>
+  <link rel="stylesheet" href="../styles.css?v=5">
+  <link rel="stylesheet" href="workout.css?v=5">
   <script defer src="../oll-config.js"></script>
   <script defer src="../oll-services.js"></script>
-  <script defer src="workout.js"></script>
 </head>
 <body class="fitness">
   <a class="skip" href="#main">Skip to content</a>
-  <header class="fitness-header"><div class="wrap"><a href="../index.html" class="brand">One Lever Labs</a><a href="#history">Workout history</a></div></header>
+  <header class="fitness-header"><div class="wrap"><a href="../index.html" class="brand">One Lever Labs</a></div></header>
   <main class="wrap fitness-main" id="main">
-    <p class="eyebrow">OLL FITNESS</p>
-    <h1>Workout Log</h1>
-    <p class="lede">Pick a workout, log your sets, and see what you did last time.</p>
-    <p id="notice" role="status"></p>
-    <section class="fitness-panel" id="session" hidden></section>
-    <section class="fitness-panel" id="plan">
-      <div class="fitness-row"><h2>Suggested workouts</h2>
-        <label>Equipment <select id="equipment"><option value="gym">Gym</option><option value="home">Home · dumbbells and bands</option></select></label>
-      </div>
-      <div id="today"></div>
-      <div class="fitness-row"><label>Plan start <input type="date" id="start-date"></label><button type="button" id="custom">Log my own workout</button></div>
-      <div id="suggestions" class="suggestions"></div>
-      <p class="fitness-note">Weekly plan adapted from Andrew Huberman’s <a href="https://www.hubermanlab.com/protocols-book">Protocols</a>.</p>
-    </section>
-    <section class="fitness-panel" id="history">
-      <h2>Workout history</h2>
-      <p id="summary"></p>
-      <div id="progress"></div>
-      <div id="entries"></div>
-      <div class="fitness-row"><button id="export" type="button">Download backup</button><label>Restore backup <input id="restore" type="file" accept=".json,application/json"></label></div>
-      <p class="fitness-note">History is saved in this browser. Download a backup to keep a copy or move it to another device.</p>
-    </section>
-    <section class="fitness-panel oll-updates" data-updates="workout"></section>
+    <h1>Tools</h1>
+    <div class="tool-cards">
+      <article class="fitness-panel"><h2>Workout Plan</h2><p>See the full week, choose gym or home exercises, and request a free tracker.</p><a class="button" href="workout.html" data-event="workout_open">Open Workout Plan</a></article>
+      <article class="fitness-panel"><h2>BMR &amp; Daily Calories</h2><p>Estimate resting calorie needs, maintenance, and a calorie target for different days of your week.</p><a class="button" href="bmr.html" data-event="bmr_open">Open BMR Calculator</a></article>
+    </div>
+    <details class="plan-library">
+      <summary>Install OLL Tools</summary>
+      <p>On iPhone, open this page in Safari and choose Add to Home Screen from the Share menu. On other devices, look for Install app in your browser menu.</p>
+      <button type="button" id="install" hidden>Install app</button>
+    </details>
   </main>
 </body>
 </html>

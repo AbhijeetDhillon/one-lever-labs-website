@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Estimate BMR and daily calories with the Katch–McArdle equation and a daily activity level.">
+  <title>BMR &amp; Daily Calories | One Lever Labs</title>
+  <link rel="icon" href="../favicon.svg">
+  <link rel="manifest" href="app.webmanifest">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="theme-color" content="#f7f7f5">
+  <script defer src="install.js"></script>
+  <link rel="stylesheet" href="../styles.css?v=5">
+  <link rel="stylesheet" href="workout.css?v=5">
+  <script defer src="../oll-config.js?v=4"></script>
+  <script defer src="../oll-services.js"></script>
+  <script defer src="bmr.js?v=4"></script>
+</head>
+<body class="fitness bmr-page">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="fitness-header"><div class="wrap"><a href="../index.html" class="brand"><span class="logo-symbol"><img src="../logo.png" alt="" width="1254" height="1254"></span>One Lever Labs</a><div class="tool-links"><a href="index.html">Tools</a><a href="workout.html">Workout Plan</a></div></div></header>
+  <main class="wrap fitness-main" id="main">
+    <div class="bmr-intro">
+      <h1>BMR &amp;<br><span class="serif">Daily Calories</span></h1>
+      <p class="lede">Find your resting calorie needs and a daily target based on how active you are.</p>
+    </div>
+    <div class="calculator-grid">
+      <section class="fitness-panel">
+        <h2>About you</h2>
+        <form id="calculator" class="calc-form">
+          <div class="pair">
+            <label>Weight <input id="weight" type="number" inputmode="decimal" min="0.1" max="1500" step="any" required placeholder="80"></label>
+            <label>Unit <select id="unit"><option value="kg">kg</option><option value="lb">lb</option></select></label>
+          </div>
+          <label>Body-fat estimate
+            <select id="method"><option value="known">I know my percentage</option><option value="range">I can give a rough range</option><option value="caliper">I have skinfold caliper readings</option></select>
+          </label>
+          <fieldset id="known"><label>Body fat (%) <input id="body-fat" type="number" inputmode="decimal" min="1" max="80" step="any" required placeholder="20"></label></fieldset>
+          <fieldset id="range" hidden disabled>
+            <details class="measurement-help">
+              <summary>Choosing a rough range</summary>
+              <p>Use the spread from recent measurements if you have them. If you compare reference photos, pick a broad range rather than an exact match. Muscle mass, fat distribution, and pose affect how a percentage looks.</p>
+              <p id="body-fat-reference" hidden><a id="body-fat-reference-link" target="_blank" rel="noopener">Open the visual body-fat reference</a></p>
+              <p>For example, enter 20% and 25% if those are the lowest and highest estimates you consider plausible.</p>
+            </details>
+            <p class="fitness-note">Enter the lowest and highest plausible estimates you have. For example, enter 20–25% if your readings vary across that range. A wider range gives a wider calorie estimate.</p>
+            <div class="pair"><label>Low body fat (%) <input id="fat-low" type="number" inputmode="decimal" min="1" max="80" step="any" required placeholder="20"></label><label>High body fat (%) <input id="fat-high" type="number" inputmode="decimal" min="1" max="80" step="any" required placeholder="25"></label></div>
+          </fieldset>
+          <fieldset id="caliper" hidden disabled>
+            <div class="pair">
+              <label>Equation <select id="equation"><option value="male">Male</option><option value="female">Female</option></select></label>
+              <label>Age <input id="age" type="number" inputmode="numeric" min="18" max="61" step="1" required></label>
+            </div>
+            <details class="measurement-help">
+              <summary>How to use a skinfold caliper</summary>
+              <ol>
+                <li>Stand relaxed. Take the readings on your right side and ask someone to help if a site is hard to reach.</li>
+                <li>Pinch the skin and fat away from the muscle. Place the caliper jaws across the fold about 1 cm below your fingers and keep holding the fold.</li>
+                <li>Read the caliper in millimeters after about 1–2 seconds. Rotate through the three sites and repeat. Average two close readings at each site.</li>
+              </ol>
+              <p id="caliper-sites"></p>
+            </details>
+            <label><span id="site-a">Chest (mm)</span><input id="fold-a" type="number" inputmode="decimal" min="1" max="80" step="any" required></label>
+            <label><span id="site-b">Abdomen (mm)</span><input id="fold-b" type="number" inputmode="decimal" min="1" max="80" step="any" required></label>
+            <label>Thigh (mm) <input id="fold-c" type="number" inputmode="decimal" min="1" max="80" step="any" required></label>
+            <div class="body-fat-preview"><strong>Estimated body fat</strong><output id="caliper-estimate" aria-live="polite">Enter your age and all three readings.</output></div>
+          </fieldset>
+          <div class="calc-divider"></div>
+          <fieldset class="activity-picker" aria-describedby="activity-guide">
+            <legend>How active is this day?</legend>
+            <p id="activity-guide">Pick the description that best matches your planned movement and training for this day.</p>
+            <div id="activity-options"></div>
+          </fieldset>
+          <div class="calc-toggles"><label><input type="checkbox" id="rest-day"> Rest day</label><label><input type="checkbox" id="fat-loss"> Fat-loss target</label></div>
+          <button type="submit" class="primary">Calculate calories</button>
+          <p id="calc-error" role="alert" hidden></p>
+        </form>
+      </section>
+      <section class="fitness-panel calc-result" aria-labelledby="result-title">
+        <h2 id="result-title" tabindex="-1">Your estimate</h2>
+        <div id="empty-result" class="result-preview"><p>Enter your measurements and choose an activity level to see your estimate.</p><ul><li><strong>Resting calories</strong> — energy used at rest.</li><li><strong>Maintenance</strong> — estimated energy used over the whole day.</li><li><strong>Meal-planning target</strong> — adjusted if you choose a rest-day or fat-loss target.</li></ul></div>
+        <div id="result" hidden>
+          <dl>
+            <div class="target"><dt>Meal-planning target</dt><dd id="target"></dd></div>
+            <div><dt>Estimated maintenance</dt><dd id="maintenance"></dd></div>
+            <div><dt>Estimated BMR</dt><dd id="bmr"></dd></div>
+            <div><dt>Lean body mass</dt><dd id="lean"></dd></div>
+            <div><dt>Body fat used</dt><dd id="fat-used"></dd></div>
+          </dl>
+          <p id="tier-explanation" class="fitness-note"></p>
+        </div>
+        <p class="fitness-note">Uses <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12425712/">Katch–McArdle</a> and the <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10453806/">Jackson–Pollock three-site method</a> for caliper inputs. Your measurements stay in this page.</p>
+      </section>
+    </div>
+    <section class="fitness-panel oll-updates" data-updates="bmr"></section>
+  </main>
+</body>
+</html>
