@@ -12,7 +12,7 @@ The complete frontend is in `dist/`: HTML, CSS, JavaScript, and an SVG favicon. 
 
 ## OLL Workout Plan
 
-Open `dist/tools/workout.html` through the site or a local static HTTP server. Requests receive the matching 30-day Gym or Home workbook. Each workbook has five week tabs and the same exercise options as the site. See [Workbook delivery](docs/workbook-delivery.md) for configuring `trackerRequestEndpoint` and testing the onsite email flow.
+Open `dist/tools/workout.html` through the site or a local static HTTP server. Requests receive the matching 12-week Gym or Home workbook. Each workbook has one sheet and the same exercise options as the site. See [Workbook delivery](docs/workbook-delivery.md) for configuring `trackerRequestEndpoint` and testing the onsite email flow.
 
 Set the public URLs in `dist/oll-config.js` to connect owner-facing services:
 

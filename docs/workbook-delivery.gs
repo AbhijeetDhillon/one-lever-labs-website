@@ -65,9 +65,9 @@ function doPost(event) {
     properties.setProperty('WORKBOOK_DAILY_USAGE', JSON.stringify({ date: today, count: used + 1 }));
     MailApp.sendEmail({
       to: email,
-      subject: `Your free 30-day ${planName} workout workbook`,
+      subject: `Your free 12-week ${planName} workout workbook`,
       body: [
-        `Here is the ${planName} workbook you requested. Open the Week 1–5 tabs to track all 30 days. Each exercise has three alternatives in its dropdown.`,
+        `Here is the ${planName} workbook you requested. It has one sheet. Swipe across the 12 week columns and use the dropdown beside each exercise to choose an alternative for that week.`,
         'The workout plan is adapted from the exercise protocol in Andrew Huberman’s book, Protocols: An Operating Manual for the Human Body. I highly recommend the book for a deeper look at the exercises and the reasoning behind the program.',
         'Buy Protocols on Amazon (paid link): https://link.amazon/B0f1LnR5Y',
         'As an Amazon Associate I earn from qualifying purchases.',
@@ -122,7 +122,7 @@ function workbookFields_(formId) {
 
 function workbookAttachment_(fileId, equipment) {
   const file = DriveApp.getFileById(fileId);
-  const filename = `oll-30-day-workout-${equipment}.xlsx`;
+  const filename = `oll-12-week-workout-${equipment}.xlsx`;
   if (file.getName() !== filename) throw new Error(`Expected the Drive file named ${filename}.`);
   return file.getBlob().setName(filename);
 }
