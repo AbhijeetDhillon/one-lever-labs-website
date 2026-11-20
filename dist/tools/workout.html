@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="../styles.css?v=5">
   <link rel="stylesheet" href="workout.css?v=12">
   <script defer src="../oll-config.js?v=11"></script>
-  <script defer src="workout.js?v=12"></script>
+  <script defer src="workout.js?v=14"></script>
 </head>
 <body class="fitness workout-page">
   <a class="skip" href="#main">Skip to content</a>
@@ -22,7 +22,7 @@
     <h1>Weekly Workout Plan</h1>
     <p class="lede">Six training days and one rest day, adapted from Andrew Huberman&rsquo;s exercise protocol. For a deeper look at the exercises and the reasoning behind them, I highly recommend his book <a href="https://www.hubermanlab.com/protocols-book"><cite>Protocols</cite></a>.</p>
     <section class="workout-workbook-offer" aria-labelledby="free-workbook-title">
-      <div><h2 id="free-workbook-title">Free workout workbook</h2><p>Gym and home plans with exercise swaps and space to track your training.</p></div>
+      <div><h2 id="free-workbook-title">Free 30-day workout workbook</h2><p>Choose Gym or Home below and get the matching workbook, with weekly tabs and exercise swaps.</p></div>
       <a class="button" href="#get-tracker">Get the workbook</a>
     </section>
     <div class="workout-education">
@@ -70,6 +70,7 @@
     </section>
     <section class="fitness-panel workout-email" id="get-tracker" aria-labelledby="tracker-title">
       <h2 id="tracker-title">Get the free workbook</h2>
+      <p class="fitness-note" id="tracker-plan">Selected plan: Gym</p>
       <form class="calc-form" id="tracker-request">
         <label>Your email <input type="email" name="email" autocomplete="email" maxlength="254" required placeholder="you@example.com"></label>
         <button class="primary" type="submit" id="request-tracker" disabled>Email me the workbook</button>

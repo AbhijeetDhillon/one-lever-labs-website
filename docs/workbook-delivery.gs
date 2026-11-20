@@ -3,7 +3,8 @@ const workbookConsentVersion = 'v1';
 function checkWorkbookSetup() {
   const settings = workbookSettings_();
   workbookFields_(settings.formId);
-  workbookAttachment_(settings.fileId);
+  workbookAttachment_(settings.fileIds.gym, 'gym');
+  workbookAttachment_(settings.fileIds.home, 'home');
   return { allowedOrigins: settings.origins, dailyEmailRemaining: MailApp.getRemainingDailyQuota() };
 }
 
@@ -47,12 +48,13 @@ function doPost(event) {
     const used = dayUsage.date === today ? dayUsage.count : 0;
     if (used >= 75 || MailApp.getRemainingDailyQuota() < 1) return workbookReply_(origin, nonce, 'busy');
 
-    const attachment = workbookAttachment_(settings.fileId);
+    const planName = equipment === 'gym' ? 'Gym' : 'Home';
+    const attachment = workbookAttachment_(settings.fileIds[equipment], equipment);
     if (previous !== 'recorded') {
       const { form, fields } = workbookFields_(settings.formId);
       const response = form.createResponse()
         .withItemResponse(fields.email.createResponse(email))
-        .withItemResponse(fields.equipment.createResponse(equipment === 'gym' ? 'Gym' : 'Home'))
+        .withItemResponse(fields.equipment.createResponse(planName))
         .withItemResponse(fields.source.createResponse('workout-plan'))
         .withItemResponse(fields.optIn.createResponse(optIn === 'yes' ? 'Yes' : 'No'));
       if (fields.consentVersion) response.withItemResponse(fields.consentVersion.createResponse(workbookConsentVersion));
@@ -63,9 +65,9 @@ function doPost(event) {
     properties.setProperty('WORKBOOK_DAILY_USAGE', JSON.stringify({ date: today, count: used + 1 }));
     MailApp.sendEmail({
       to: email,
-      subject: 'Your free workout workbook',
+      subject: `Your free 30-day ${planName} workout workbook`,
       body: [
-        'Here is the workout workbook you requested. It includes Gym and Home plans, exercise alternatives, and space to track your training.',
+        `Here is the ${planName} workbook you requested. Open the Week 1–5 tabs to track all 30 days. Each exercise has three alternatives in its dropdown.`,
         'The workout plan is adapted from the exercise protocol in Andrew Huberman’s book, Protocols: An Operating Manual for the Human Body. I highly recommend the book for a deeper look at the exercises and the reasoning behind the program.',
         'Buy Protocols on Amazon (paid link): https://link.amazon/B0f1LnR5Y',
         'As an Amazon Associate I earn from qualifying purchases.',
@@ -87,12 +89,16 @@ function doPost(event) {
 function workbookSettings_() {
   const properties = PropertiesService.getScriptProperties();
   const formId = properties.getProperty('WORKBOOK_FORM_ID');
-  const fileId = properties.getProperty('WORKBOOK_FILE_ID');
+  const fileIds = {
+    gym: properties.getProperty('WORKBOOK_GYM_FILE_ID'),
+    home: properties.getProperty('WORKBOOK_HOME_FILE_ID')
+  };
   const origins = (properties.getProperty('WORKBOOK_ORIGINS') || '').split(',').map(value => value.trim()).filter(Boolean);
-  if (!formId || !fileId || !origins.length || origins.some(value => !/^https?:\/\/[a-z0-9.-]+(?::\d+)?$/i.test(value))) {
-    throw new Error('Set WORKBOOK_FORM_ID, WORKBOOK_FILE_ID, and WORKBOOK_ORIGINS in Script Properties.');
+  if (!formId || !fileIds.gym || !fileIds.home || fileIds.gym === fileIds.home
+      || !origins.length || origins.some(value => !/^https?:\/\/[a-z0-9.-]+(?::\d+)?$/i.test(value))) {
+    throw new Error('Set WORKBOOK_FORM_ID, distinct WORKBOOK_GYM_FILE_ID and WORKBOOK_HOME_FILE_ID values, and WORKBOOK_ORIGINS.');
   }
-  return { formId, fileId, origins };
+  return { formId, fileIds, origins };
 }
 
 function workbookFields_(formId) {
@@ -114,10 +120,11 @@ function workbookFields_(formId) {
   return { form, fields };
 }
 
-function workbookAttachment_(fileId) {
+function workbookAttachment_(fileId, equipment) {
   const file = DriveApp.getFileById(fileId);
-  if (!/\.xlsx$/i.test(file.getName())) throw new Error('Upload the Excel workbook as an .xlsx file.');
-  return file.getBlob().setName('oll-weekly-workout-workbook.xlsx');
+  const filename = `oll-30-day-workout-${equipment}.xlsx`;
+  if (file.getName() !== filename) throw new Error(`Expected the Drive file named ${filename}.`);
+  return file.getBlob().setName(filename);
 }
 
 function workbookReply_(origin, nonce, status) {

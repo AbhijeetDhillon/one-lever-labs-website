@@ -145,6 +145,7 @@
   }
 
   function renderPlan() {
+    $("tracker-plan").textContent = "Selected plan: " + (equipment.value === "home" ? "Home" : "Gym");
     $("suggestions").replaceChildren(...week.map((day, index) => {
       const details = dayDetails[index];
       const card = node("article", "", "suggestion plan-day");
