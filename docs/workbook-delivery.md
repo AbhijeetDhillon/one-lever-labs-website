@@ -14,6 +14,8 @@ If a response appears in Forms without an email, open **Executions** in Apps Scr
 
 The editor runs the saved source. The public `/exec` URL runs the version selected in **Manage deployments**. After updating `Code.gs`, edit the existing web app deployment and select **New version** to make the latest logs available to website requests. Submit one request with an address and plan combination you have not tested in the past ten minutes.
 
+If Cloud logs are disabled, open **Project Settings → Script properties** after the fresh request and look for `WORKBOOK_LAST_DELIVERY`. The current script creates this property after a website send attempt and overwrites it on the next attempt. It stores the timestamp, plan and outcome. `accepted` means MailApp returned successfully, while `failed` means MailApp raised an error. Compare the timestamp with your test. Receiving the email is the inbox delivery check.
+
 If MailApp accepts the website request and the email remains missing, compare it with the exact same email sent from the editor. Temporarily add the function below after deploying the current version. Replace the placeholder with an inbox you control, run the function from the editor, and remove it from the editor afterward.
 
 ```javascript

@@ -41,6 +41,7 @@ function doPost(event) {
     return workbookReply_(origin, nonce, 'busy');
   }
   let stage = 'check delivery limits';
+  let deliveryAttempt;
   try {
     const cache = CacheService.getScriptCache();
     const previous = cache.get(key);
@@ -77,7 +78,9 @@ function doPost(event) {
     stage = 'update the daily send count';
     properties.setProperty('WORKBOOK_DAILY_USAGE', JSON.stringify({ date: today, count: used + 1 }));
     stage = 'send the email through MailApp';
+    deliveryAttempt = { at: new Date().toISOString(), plan: planName, outcome: 'failed' };
     sendWorkbookEmail_(email, planName, attachment);
+    deliveryAttempt.outcome = 'accepted';
     stage = 'cache the successful send';
     cache.put(key, 'sent', 600);
     return workbookReply_(origin, nonce, 'sent');
@@ -87,10 +90,20 @@ function doPost(event) {
     if (/authoriz|permission|scope/i.test(message)) detail = ' Google reported a permissions error.';
     else if (/quota|limit|too many times/i.test(message)) detail = ' Google reported a service limit.';
     else if (/attachment|blob/i.test(message)) detail = ' Google reported an attachment error.';
+    if (deliveryAttempt?.outcome === 'failed' && detail) deliveryAttempt.detail = detail.trim();
     console.error(`Workbook request failed at the step to ${stage}.${detail}`);
     return workbookReply_(origin, nonce, 'unavailable');
   } finally {
+    if (deliveryAttempt) recordWorkbookDelivery_(deliveryAttempt);
     lock.releaseLock();
+  }
+}
+
+function recordWorkbookDelivery_(attempt) {
+  try {
+    PropertiesService.getScriptProperties().setProperty('WORKBOOK_LAST_DELIVERY', JSON.stringify(attempt));
+  } catch {
+    console.warn('The last workbook delivery result could not be saved.');
   }
 }
 
