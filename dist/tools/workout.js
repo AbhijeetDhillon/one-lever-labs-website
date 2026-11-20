@@ -16,13 +16,13 @@
     { name: "Working set 2", factor: 1, reps: "6–12", rest: "2–3 min" }
   ];
   const dayDetails = [
-    { type: "Cardio", description: "Settle into a sustainable effort. Keep the main session between Zone 2 and Zone 3." },
-    { type: "Strength", description: "Start with the quad and hamstring compounds, then work the quads and hamstrings individually. Finish with a calf exercise.", targets: ["Quad compound", "Hamstrings and glutes · hip hinge", "Quad isolation", "Hamstring isolation", "Calves"] },
-    { type: "Recovery", description: "Skip the scheduled training session and keep your steps easy. Resume with chest, back, and core on Day 4." },
+    { type: "Cardio", description: "Keep a steady, sustainable pace." },
+    { type: "Strength", description: "Start with the compound lifts, then finish with isolation work.", targets: ["Quad compound", "Hamstrings and glutes · hip hinge", "Quad isolation", "Hamstring isolation", "Calves"] },
+    { type: "Recovery", description: "Keep your walking easy." },
     { type: "Strength", description: "Pair chest presses with upper-body pulls, then finish with a core exercise.", targets: ["Upper-chest press", "Horizontal chest press", "Chest isolation", "Vertical pull", "Horizontal pull", "Lats · straight-arm motion", "Core · leg or knee raise"] },
-    { type: "Cardio", description: "Hold a sustained, challenging effort for the main session. Use the suggested activity or another cardio machine that lets you stay in the target zone." },
-    { type: "Strength", description: "Start with the compound overhead press, then train side and rear shoulders. Use two direct exercises each for biceps and triceps. Finish with core.", targets: ["Shoulder press", "Side delts", "Rear delts", "Biceps isolation", "Elbow flexors", "Triceps isolation", "Triceps isolation · overhead", "Core"] },
-    { type: "Cardio", description: "Build up with a warm-up, then alternate hard efforts with recovery. The time target counts the hard efforts together. If you choose sprints, use short bouts with recovery between them. Finish with an easy cool-down." }
+    { type: "Cardio", description: "Hold a steady effort in the target zone." },
+    { type: "Strength", description: "Start with the shoulder press. Finish with core.", targets: ["Shoulder press", "Side delts", "Rear delts", "Biceps isolation", "Elbow flexors", "Triceps isolation", "Triceps isolation · overhead", "Core"] },
+    { type: "Cardio", description: "Warm up, alternate short hard efforts with recovery, then cool down. Count only the hard efforts toward the target." }
   ];
   const gymSubstitutions = [
     [["Incline treadmill walk", "Elliptical", "Steady swim"]],
@@ -159,7 +159,7 @@
           list.append(exerciseRow(exercise, index, exerciseIndex, details.targets?.[exerciseIndex]));
         });
         card.append(list);
-        if (!day.cardio) card.append(node("p", "Each exercise · 2 warm-up sets + 2 working sets", "plan-prescription"));
+        if (!day.cardio) card.append(node("p", "Per exercise · 2 warm-up sets, 2 working sets", "plan-prescription"));
       }
       card.append(node("p", dailyStepTarget, "plan-steps"));
       return card;
@@ -211,7 +211,7 @@
     const fields = {
       email: trackerForm.elements.email.value.trim(),
       equipment: equipment.value,
-      marketingOptIn: trackerForm.elements.marketingOptIn.checked ? "yes" : "no",
+      marketingOptIn: "no",
       parentOrigin: location.origin,
       nonce
     };

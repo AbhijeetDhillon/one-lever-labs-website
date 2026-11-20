@@ -190,7 +190,6 @@
   .fitness-panel { padding: 12px; }
   .bmr-intro h1, .fitness h1 { font-size: 2.5rem; }
 }
-.daily-steps { line-height: 1.5; background: #fff1e7; padding: 12px 14px; border-radius: 10px; }
 .plan-day .plan-steps { margin: 8px 0 0; color: #57575b; font-size: .9rem; }
 .plan-intro { margin-bottom: 12px; line-height: 1.5; color: #454347; }
 .cardio-exercise { list-style: none; padding-inline-start: 0; }
@@ -215,5 +214,12 @@
 .workout-workbook-offer p { margin: 0; line-height: 1.5; }
 .workout-workbook-offer .button { min-height: 44px; justify-content: center; }
 @media (max-width: 480px) { .workout-workbook-offer .button { width: 100%; } }
-.affiliate-book { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; margin: 0 0 16px; color: #57575b; font-size: .9rem; line-height: 1.5; }
-.affiliate-book a { display: inline-flex; flex-wrap: wrap; align-items: center; column-gap: .25em; min-height: 44px; color: #a63c12; font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+
+.workout-page .fitness-main > .lede { max-width: 640px; margin-bottom: 14px; }
+.workout-page .workout-workbook-offer { margin-block: 0 16px; }
+.workout-page .workout-education { background: #f5f5f7; }
+.workout-page .workout-education p { max-width: 72ch; margin-bottom: 0; }
+.workout-page #plan > .fitness-row { margin-top: 0; }
+.workout-page #plan > .fitness-row h2 { margin-bottom: 0; }
+.workout-page #tracker-request { margin-top: 12px; gap: 10px; }
+#tracker-status:empty { display: none; }

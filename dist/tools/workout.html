@@ -11,37 +11,33 @@
   <meta name="theme-color" content="#f7f7f5">
   <script defer src="install.js"></script>
   <link rel="stylesheet" href="../styles.css?v=5">
-  <link rel="stylesheet" href="workout.css?v=10">
+  <link rel="stylesheet" href="workout.css?v=12">
   <script defer src="../oll-config.js?v=11"></script>
-  <script defer src="../oll-services.js"></script>
-  <script defer src="workout.js?v=11"></script>
+  <script defer src="workout.js?v=12"></script>
 </head>
 <body class="fitness workout-page">
   <a class="skip" href="#main">Skip to content</a>
   <header class="fitness-header"><div class="wrap"><a href="index.html" class="brand">OLL Tools</a><div class="tool-links"><a href="bmr.html">BMR</a></div></div></header>
   <main class="wrap fitness-main" id="main">
-    <p class="eyebrow">OLL FITNESS</p>
     <h1>Weekly Workout Plan</h1>
-    <p class="lede">Six training days and one rest day, adapted by One Lever Labs from the exercise material in Andrew Huberman&rsquo;s <a href="https://www.hubermanlab.com/protocols-book"><cite>Protocols</cite></a>.</p>
-    <p class="affiliate-book"><a href="https://link.amazon/B0f1LnR5Y" rel="sponsored">Buy <cite>Protocols</cite> on Amazon (paid link)</a><span>As an Amazon Associate I earn from qualifying purchases.</span></p>
+    <p class="lede">Six training days and one rest day, adapted from Andrew Huberman&rsquo;s <a href="https://www.hubermanlab.com/protocols-book"><cite>Protocols</cite></a>.</p>
     <section class="workout-workbook-offer" aria-labelledby="free-workbook-title">
-      <div><h2 id="free-workbook-title">Take the plan with you for free</h2><p>Get the Excel workbook with Gym and Home plans, three exercise alternatives per movement, and room to record your workouts and daily steps.</p></div>
-      <a class="button" href="#get-tracker">Get the free workbook</a>
+      <div><h2 id="free-workbook-title">Free workout workbook</h2><p>Gym and home plans with exercise swaps and space to track your training.</p></div>
+      <a class="button" href="#get-tracker">Get the workbook</a>
     </section>
     <div class="workout-education">
       <strong>For educational use</strong>
-      <p>This sample week illustrates the exercise protocol. It is not a personalized training prescription. Unfamiliar lifts, poor technique, and doing too much too soon can cause injury. If a movement is new to you, get help with your form and adjust the intensity to your ability.</p>
+      <p>This sample plan is educational. Poor technique or progressing too quickly can cause injury. Get help with unfamiliar lifts and adjust the intensity to your ability.</p>
       <div class="workout-resource-links">
-        <a class="text-link" href="https://protocolsbook.com/videos">Watch the <cite>Protocols</cite> videos</a>
+        <a class="text-link" href="https://protocolsbook.com/videos"><cite>Protocols</cite> videos</a>
         <a class="text-link" href="https://www.hubermanlab.com/episode/fitness-toolkit-protocol-and-tools-to-optimize-physical-health">Huberman Lab Fitness Toolkit</a>
       </div>
     </div>
     <section class="fitness-panel" id="plan">
-      <div class="fitness-row"><h2>Your weekly workout plan</h2>
+      <div class="fitness-row"><h2>Seven-day schedule</h2>
         <label>Equipment <select id="equipment"><option value="gym">Gym</option><option value="home">Home · dumbbells and bands</option></select></label>
       </div>
-      <p class="plan-intro">Tap any exercise name to see three alternatives for your equipment setting. Keep the same set and rep targets or cardio time and intensity. Pick a load you can control for the new movement.</p>
-      <p class="daily-steps"><strong>Daily step target</strong> · Aim for 8,000–10,000 steps on all seven days, including the rest day.</p>
+      <p class="plan-intro">Choose an exercise to see three swaps. Keep the same sets, reps, or cardio targets.</p>
       <div class="workout-plan-layout"><div id="suggestions" class="suggestions weekly-plan"></div>
         <aside class="plan-reference" aria-labelledby="training-terms">
           <details open class="training-terms">
@@ -49,9 +45,9 @@
             <dl>
               <div><dt>Rep</dt><dd>One complete repetition of an exercise.</dd></div>
               <div><dt>Set</dt><dd>A group of reps performed together before resting.</dd></div>
-              <div><dt>Warm-up set</dt><dd>A lighter practice set that prepares you for the heavier sets.</dd></div>
-              <div><dt>Working set</dt><dd>A set performed at the weight chosen for your main training effort.</dd></div>
-              <div><dt>Working weight</dt><dd>The weight used for working sets. Warm-up percentages are based on this weight.</dd></div>
+              <div><dt>Warm-up set</dt><dd>A lighter set to prepare for the working sets.</dd></div>
+              <div><dt>Working set</dt><dd>A set at your working weight.</dd></div>
+              <div><dt>Working weight</dt><dd>The load you use for your main sets. Warm-up percentages use this load.</dd></div>
               <div><dt>Rest</dt><dd>Time between sets before starting the next one.</dd></div>
               <div><dt>Compound exercise</dt><dd>A movement that uses multiple joints, such as a squat.</dd></div>
               <div><dt>Isolation exercise</dt><dd>A movement that emphasizes one muscle group, such as a leg extension.</dd></div>
@@ -59,31 +55,27 @@
           </details>
           <p class="fitness-note"><a href="https://www.acefitness.org/resources/everyone/exercise-library/">ACE exercise library for form and equipment</a></p>
           <section class="set-guide" aria-labelledby="set-guide-title">
-            <h3 id="set-guide-title">Sets and reps for every strength exercise</h3>
-            <p>Pick a working weight you can lift for 6–12 controlled reps. Warm up with the two lighter sets, then complete the two working sets.</p>
+            <h3 id="set-guide-title">Strength sets &amp; reps</h3>
+            <p>Choose a working weight you can lift for 6–12 controlled reps.</p>
             <div class="set-guide-table">
               <table>
                 <thead><tr><th scope="col">Set</th><th scope="col">Load</th><th scope="col">Reps</th><th scope="col">Rest after</th></tr></thead>
                 <tbody id="set-guide-rows"></tbody>
               </table>
             </div>
-            <p class="fitness-note">For bodyweight movements, use an easier version for the warm-ups and the full movement for the work sets.</p>
+            <p class="fitness-note">For bodyweight warm-ups, use an easier variation.</p>
           </section>
         </aside>
       </div>
     </section>
     <section class="fitness-panel workout-email" id="get-tracker" aria-labelledby="tracker-title">
-      <h2 id="tracker-title">Get the free workout workbook</h2>
-      <p>The free workbook includes both equipment plans, exercise dropdowns, and space to record weights, reps, cardio minutes, daily steps, and notes.</p>
+      <h2 id="tracker-title">Get the free workbook</h2>
       <form class="calc-form" id="tracker-request">
         <label>Your email <input type="email" name="email" autocomplete="email" maxlength="254" required placeholder="you@example.com"></label>
-        <p class="fitness-note">We use this address to fulfill your workbook request.</p>
-        <label><input type="checkbox" name="marketingOptIn"> Email me about new One Lever Labs tools, products, and offers.</label>
-        <button class="primary" type="submit" id="request-tracker" disabled>Email me the free workbook</button>
+        <button class="primary" type="submit" id="request-tracker" disabled>Email me the workbook</button>
         <p class="fitness-note" id="tracker-status" role="status">Workbook email delivery is being set up.</p>
       </form>
     </section>
-    <section class="fitness-panel oll-updates" data-updates="workout"></section>
   </main>
 </body>
 </html>

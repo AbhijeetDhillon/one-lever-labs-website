@@ -1,4 +1,4 @@
-const cacheName = "oll-tools-v11";
+const cacheName = "oll-tools-v12";
 const assets = [
   "index.html", "workout.html", "bmr.html", "workout.js", "bmr.js", "workout.css",
   "install.js", "app.webmanifest", "icon-192.png", "icon-512.png",
