@@ -3,42 +3,95 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f9f7f3">
   <meta name="description" content="One Lever Labs tools for planning workouts and estimating daily calories.">
   <title>Tools | One Lever Labs</title>
-  <link rel="icon" href="../favicon.svg">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="manifest" href="app.webmanifest">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <meta name="theme-color" content="#f7f7f5">
+  <link rel="stylesheet" href="../site.css?v=4">
+  <script defer src="../script.js?v=3"></script>
   <script defer src="install.js"></script>
-  <link rel="stylesheet" href="../styles.css?v=5">
-  <link rel="stylesheet" href="workout.css?v=13">
-  <script defer src="../oll-config.js"></script>
+  <script defer src="../oll-config.js?v=5"></script>
   <script defer src="../oll-services.js"></script>
 </head>
-<body class="fitness tools-page">
-  <a class="skip" href="#main">Skip to content</a>
-  <header class="fitness-header"><div class="wrap"><a href="../index.html" class="brand">One Lever Labs</a></div></header>
-  <main class="wrap fitness-main" id="main">
-    <h1>Tools</h1>
-    <p class="lede">Plan your training and estimate your daily calorie needs.</p>
-    <div class="tool-cards">
-      <article class="fitness-panel tool-card">
-        <div>
+<body class="directory-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="masthead">
+    <div class="site-wrap masthead-inner">
+      <a class="site-brand" href="../index.html">
+        <span class="brand-mark"><img src="../logo.png?v=2" alt="" width="515" height="509"></span>
+        <span class="brand-name">One Lever <small>Labs</small></span>
+      </a>
+      <nav class="primary-nav" aria-label="Main navigation">
+        <a href="../index.html#products">Products</a>
+        <div class="tools-nav">
+          <a href="index.html" aria-current="page" data-event="tools_nav_click">Tools</a>
+          <details class="tools-disclosure">
+            <summary aria-label="Tools shortcuts"><span aria-hidden="true"></span></summary>
+            <div class="tools-menu">
+              <a href="workout.html" data-event="workout_open">Workout Plan</a>
+              <a href="bmr.html" data-event="bmr_open">BMR &amp; Daily Calories</a>
+            </div>
+          </details>
+        </div>
+        <a href="../index.html#about">Studio</a>
+        <a href="../appniva.html">Appniva</a>
+        <a class="site-button button-outline header-contact" href="../index.html#contact">Say hello</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-wrap directory" id="main" tabindex="-1">
+    <div class="directory-intro">
+      <h1>Tools for your <em>routine.</em></h1>
+      <p>Build a workout plan or estimate how many calories you use in a day.</p>
+    </div>
+    <div class="directory-grid">
+      <article class="directory-card">
+        <div class="directory-art workout-art" aria-hidden="true">
+          <div class="weight"><span></span><span></span></div>
+        </div>
+        <div class="directory-copy">
+          <p class="eyebrow">Training</p>
           <h2>Workout Plan</h2>
-          <p>Follow a seven-day Gym or Home plan, swap exercises, and track your progress in a free 12-week workbook.</p>
-          <a class="tool-source" href="https://www.hubermanlab.com/protocols-book">Adapted from <cite>Protocols</cite></a>
+          <p>Follow a seven-day gym or home plan, swap exercises, and track your progress in a free 12-week workbook.</p>
+          <div class="product-actions">
+            <a class="site-button" href="workout.html" data-event="workout_open">Open Workout Plan</a>
+            <a class="site-text-link" href="https://www.hubermanlab.com/protocols-book">Adapted from <cite>Protocols</cite></a>
+          </div>
         </div>
-        <a class="button" href="workout.html" data-event="workout_open">Open Workout Plan</a>
       </article>
-      <article class="fitness-panel tool-card">
-        <div>
-          <h2>BMR &amp; Daily Calories</h2>
-          <p>Estimate resting and maintenance calories, then set a daily target based on your body composition and activity.</p>
-          <a class="tool-source" href="bmr.html#bmr-method">Katch–McArdle equation</a>
+      <article class="directory-card">
+        <div class="directory-art calories-art" aria-hidden="true">
+          <div class="focus-dial"><span></span></div>
         </div>
-        <a class="button" href="bmr.html" data-event="bmr_open">Open BMR Calculator</a>
+        <div class="directory-copy">
+          <p class="eyebrow">Nutrition</p>
+          <h2>BMR &amp; Daily Calories</h2>
+          <p>Estimate what your body uses at rest and find a daily calorie target based on your activity and body composition.</p>
+          <div class="product-actions">
+            <a class="site-button" href="bmr.html" data-event="bmr_open">Open BMR Calculator</a>
+            <a class="site-text-link" href="bmr.html#bmr-method">Katch–McArdle equation</a>
+          </div>
+        </div>
       </article>
     </div>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-wrap footer-inner">
+      <div class="footer-brand">
+        <a href="../index.html">One Lever Labs LLC</a>
+        <span>New Jersey, United States</span>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="../ferna-support.html">Ferna support</a>
+        <a href="../zonedin-web-extension-privacy.html">ZonedIn privacy</a>
+        <a href="../appniva.html">Appniva guide</a>
+      </nav>
+      <p>© <span data-year>2026</span> One Lever Labs LLC</p>
+    </div>
+  </footer>
 </body>
 </html>
