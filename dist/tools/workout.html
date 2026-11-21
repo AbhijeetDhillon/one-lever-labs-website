@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="../styles.css?v=5">
   <link rel="stylesheet" href="workout.css?v=13">
   <script defer src="../oll-config.js?v=12"></script>
-  <script defer src="workout.js?v=16"></script>
+  <script defer src="workout.js?v=17"></script>
 </head>
 <body class="fitness workout-page">
   <a class="skip" href="#main">Skip to content</a>
@@ -65,7 +65,7 @@
     </section>
     <section class="fitness-panel workout-email" id="get-tracker" aria-labelledby="tracker-title">
       <h2 id="tracker-title">Get the free workbook</h2>
-      <p class="fitness-note">Enter your email to get the matching Excel workbook.</p>
+      <p class="fitness-note">Choose Gym or Home and enter your email to receive the Excel workbook.</p>
       <form class="calc-form" id="tracker-request">
         <fieldset class="plan-picker">
           <legend>Workbook plan</legend>
@@ -75,7 +75,7 @@
           </div>
         </fieldset>
         <label>Your email <input type="email" name="email" autocomplete="email" maxlength="254" required placeholder="you@example.com"></label>
-        <button class="primary" type="submit" id="request-tracker" disabled>Get the Gym workbook</button>
+        <button class="primary" type="submit" id="request-tracker" disabled>Email me the Gym workbook</button>
         <p class="fitness-note" id="tracker-status" role="status">Workbook requests are unavailable right now.</p>
         <a class="button workbook-download" id="workbook-download" hidden download>Download workbook (.xlsx)</a>
       </form>

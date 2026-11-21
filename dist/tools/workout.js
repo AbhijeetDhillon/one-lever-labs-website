@@ -184,7 +184,7 @@
 
   function renderPlan() {
     for (const option of planOptions) option.checked = option.value === equipment;
-    trackerButton.textContent = "Get the " + (equipment === "home" ? "Home" : "Gym") + " workbook";
+    trackerButton.textContent = "Email me the " + (equipment === "home" ? "Home" : "Gym") + " workbook";
     $("home-equipment").hidden = equipment !== "home";
     const schedule = $("suggestions");
     const openDays = Array.from(schedule.children, card => ({
@@ -293,7 +293,11 @@
     const timeout = setTimeout(() => finish({ status: "timeout" }), 30000);
     window.addEventListener("message", receive);
     document.body.append(frame, request);
-    request.submit();
+    try {
+      request.submit();
+    } catch {
+      finish({ status: "unavailable" });
+    }
   }
 
   function showWorkbook(encoded, plan) {
@@ -325,23 +329,38 @@
     trackerDownload.hidden = true;
     trackerDownload.removeAttribute("href");
     trackerButton.disabled = true;
-    trackerStatus.textContent = "Preparing your " + plan + " workbook…";
-    postWorkbookRequest({ ...fields, delivery: "download" }, (result) => {
-      trackerButton.disabled = false;
-      if (result.status === "ready" && showWorkbook(result.workbook, plan)) {
-        trackerStatus.textContent = "Your " + plan + " workbook is ready.";
-        if (trackerForm.elements.email.value.trim() === email) trackerForm.elements.email.value = "";
-        postWorkbookRequest({ ...fields, delivery: "email-copy" }, () => {});
-      } else if (result.status === "sent") {
-        trackerStatus.textContent = "Check your inbox for the " + plan + " workbook.";
-        if (trackerForm.elements.email.value.trim() === email) trackerForm.elements.email.value = "";
-      } else if (result.status === "invalid") {
+    trackerStatus.textContent = "Emailing your " + plan + " workbook…";
+
+    function showEmailSent() {
+      trackerStatus.textContent = "Check your inbox for the " + plan + " workbook.";
+      if (trackerForm.elements.email.value.trim() === email) trackerForm.elements.email.value = "";
+    }
+
+    postWorkbookRequest({ ...fields, delivery: "email" }, (result) => {
+      if (result.status === "invalid") {
         trackerStatus.textContent = "Check your email address and try again.";
-      } else if (result.status === "busy") {
-        trackerStatus.textContent = "Workbook delivery is busy. Please try again later.";
-      } else {
-        trackerStatus.textContent = "We could not prepare your workbook. Please try again.";
+        trackerButton.disabled = false;
+        return;
       }
+      if (result.status === "timeout") {
+        trackerStatus.textContent = "We couldn’t confirm the email. Check your inbox before trying again.";
+        trackerButton.disabled = false;
+        return;
+      }
+
+      if (result.status === "sent") {
+        showEmailSent();
+      } else if (result.status === "busy") {
+        trackerStatus.textContent = "Workbook email is busy. Please try again later.";
+      } else {
+        trackerStatus.textContent = "We couldn’t email your workbook. Please try again.";
+      }
+
+      postWorkbookRequest({ ...fields, delivery: "download" }, (download) => {
+        if (download.status === "ready") showWorkbook(download.workbook, plan);
+        if (download.status === "sent") showEmailSent();
+        trackerButton.disabled = false;
+      });
     });
   });
 
