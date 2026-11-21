@@ -8,7 +8,7 @@ Open `dist/index.html` directly in your browser. No server, installation, or bui
 
 ## Deployment
 
-The complete frontend is in `dist/`: HTML, CSS, JavaScript, and an SVG favicon. It uses system fonts and local assets with no external requests, backend, or dependencies. Contact links open the visitor's email application.
+Cloudflare Pages serves the frontend in `dist/` and runs the signup endpoint in `functions/`. The website uses bundled fonts and local assets. Contact links open the visitor's email application.
 
 ## OLL Workout Plan
 
@@ -17,6 +17,6 @@ Open `dist/tools/workout.html` through the site or a local static HTTP server. R
 Set the public URLs in `dist/oll-config.js` to connect owner-facing services:
 
 - `analyticsEndpoint` receives a beacon POST containing JSON with `event` and `source` only. The receiver should accept a text/plain request body and validate the event and source against the allowlist. Analytics starts after the visitor enables it.
-- `signupEndpoint` receives a JSON POST with `email`, `source` and `consent`. Return a 2xx response only after accepting the request and initiating double opt-in. Keep the email provider credential server-side, enable duplicate handling and rate limiting, and allow the OLL website origin if hosted separately. With no endpoint, the form opens a draft addressed to OLL for manual handling.
+- `signupEndpoint` points to `/api/updates`, which saves the email in the OLL Google Form. Update the field mapping and confirmation text in `functions/api/updates.js` if the form changes.
 
 Configure and test both services on the production origin before using their dashboards or sending launch announcements.

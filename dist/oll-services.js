@@ -27,19 +27,18 @@
     section.innerHTML = `
       <div class="updates-copy">
         <h2>Get OLL updates</h2>
-        <p>Get an email when we launch a new app or tool.</p>
+        <p>New apps and tools, by email.</p>
       </div>
       <div class="updates-action"></div>`;
     const action = section.querySelector(".updates-action");
 
     if (config.signupEndpoint) {
       action.innerHTML = `
-        <form>
+        <form method="post">
           <div class="updates-fields">
-            <label>Email address <input type="email" name="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></label>
-            <button class="button" type="submit">Sign up</button>
+            <label>Email <input type="email" name="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required></label>
+            <button class="button" type="submit">Subscribe</button>
           </div>
-          <label class="updates-consent"><input type="checkbox" required> Send me OLL product announcements.</label>
           <p class="updates-status" role="status"></p>
         </form>`;
       const form = action.querySelector("form");
@@ -47,29 +46,32 @@
       const status = form.querySelector("[role=status]");
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
+        if (button.disabled) return;
+
         button.disabled = true;
-        status.textContent = "Submitting…";
+        status.textContent = "Subscribing…";
         try {
           const response = await fetch(config.signupEndpoint, {
             method: "POST", credentials: "omit", headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: form.elements.email.value.trim(), source, consent: true })
+            body: JSON.stringify({ email: form.elements.email.value.trim() })
           });
-          if (!response.ok) throw new Error("Signup failed");
-          status.textContent = "Check your inbox to confirm your signup.";
+          const result = await response.json();
+          if (!response.ok || result.ok !== true) {
+            status.textContent = result.error || "Signup couldn’t be confirmed. Try again shortly.";
+            return;
+          }
+
+          status.textContent = "You’re subscribed.";
           form.reset();
           track("updates_signup", source);
         } catch {
-          status.textContent = "Signup could not be submitted. Please try again.";
+          status.textContent = "Signup couldn’t be confirmed. Try again shortly.";
         } finally {
           button.disabled = false;
         }
       });
     } else {
-      const link = document.createElement("a");
-      link.className = "button";
-      link.textContent = config.signupFormUrl ? "Sign up for updates" : "Request updates by email";
-      link.href = config.signupFormUrl || "mailto:abhijeet@oneleverlabs.com?subject=OLL%20product%20updates&body=Please%20email%20me%20about%20new%20One%20Lever%20Labs%20apps%20and%20tools.";
-      action.append(link);
+      action.textContent = "Signup is unavailable right now.";
     }
 
     if (config.analyticsEndpoint) {
