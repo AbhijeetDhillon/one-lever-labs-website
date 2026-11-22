@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Estimate BMR and daily calories with the Katch–McArdle equation and a daily activity level.">
   <title>BMR &amp; Daily Calories | One Lever Labs</title>
-  <link rel="icon" href="../favicon.svg?v=2" type="image/svg+xml">
+  <link rel="icon" href="../oll-lever-icon.png" type="image/png" sizes="64x64">
   <link rel="manifest" href="app.webmanifest">
   <link rel="apple-touch-icon" href="icon-192.png">
   <meta name="theme-color" content="#f7f7f5">
   <script defer src="install.js"></script>
   <link rel="stylesheet" href="../styles.css?v=5">
-  <link rel="stylesheet" href="workout.css?v=5">
-  <script defer src="../oll-config.js?v=6"></script>
+  <link rel="stylesheet" href="workout.css?v=6">
+  <script defer src="../oll-config.js?v=7"></script>
   <script defer src="../oll-services.js?v=2"></script>
   <script defer src="bmr.js?v=4"></script>
 </head>
@@ -37,13 +37,15 @@
           </label>
           <fieldset id="known"><label>Body fat (%) <input id="body-fat" type="number" inputmode="decimal" min="1" max="80" step="any" required placeholder="20"></label></fieldset>
           <fieldset id="range" hidden disabled>
-            <details class="measurement-help">
-              <summary>Choosing a rough range</summary>
-              <p>Use the spread from recent measurements if you have them. If you compare reference photos, pick a broad range rather than an exact match. Muscle mass, fat distribution, and pose affect how a percentage looks.</p>
-              <p id="body-fat-reference" hidden><a id="body-fat-reference-link" target="_blank" rel="noopener">Open the visual body-fat reference</a></p>
-              <p>For example, enter 20% and 25% if those are the lowest and highest estimates you consider plausible.</p>
+            <details class="measurement-help body-fat-guide">
+              <summary>View body-fat guide</summary>
+              <p>AI illustrations for rough comparisons. Muscle mass and fat distribution affect how the same percentage looks.</p>
+              <figure>
+                <img src="body-fat-guide.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="Adult body-fat examples. Men at 10–19%, 20–29%, 30–39%, and 40% or higher. Women at 20–29%, 30–39%, 40–49%, and 50% or higher.">
+              </figure>
+              <p id="body-fat-reference" hidden><a id="body-fat-reference-link" target="_blank" rel="noopener">Open full-size guide</a></p>
             </details>
-            <p class="fitness-note">Enter the lowest and highest plausible estimates you have. For example, enter 20–25% if your readings vary across that range. A wider range gives a wider calorie estimate.</p>
+            <p class="fitness-note">Enter your lowest and highest plausible estimates. Use recent measurements when available.</p>
             <div class="pair"><label>Low body fat (%) <input id="fat-low" type="number" inputmode="decimal" min="1" max="80" step="any" required placeholder="20"></label><label>High body fat (%) <input id="fat-high" type="number" inputmode="decimal" min="1" max="80" step="any" required placeholder="25"></label></div>
           </fieldset>
           <fieldset id="caliper" hidden disabled>

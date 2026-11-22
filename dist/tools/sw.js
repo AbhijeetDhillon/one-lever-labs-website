@@ -1,8 +1,8 @@
-const cacheName = "oll-tools-v21";
+const cacheName = "oll-tools-v22";
 const assets = [
   "index.html", "workout.html", "bmr.html", "workout.js", "bmr.js", "workout.css",
-  "install.js", "app.webmanifest", "icon-192.png", "icon-512.png",
-  "../favicon.svg", "../logo.png", "../styles.css", "../oll-config.js", "../oll-services.js",
+  "install.js", "app.webmanifest", "icon-192.png", "icon-512.png", "body-fat-guide.webp",
+  "../favicon.svg", "../oll-lever-icon.png", "../favicon.ico", "../logo.png", "../styles.css", "../oll-config.js", "../oll-services.js",
   "../site.css", "../script.js", "../fonts/bricolage-grotesque.woff2"
 ];
 const urls = new Set(assets.map((asset) => new URL(asset, self.registration.scope).href));

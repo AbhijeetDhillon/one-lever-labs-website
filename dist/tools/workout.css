@@ -158,6 +158,9 @@
 .measurement-help p, .measurement-help ol { margin: 8px 0 0; }
 .measurement-help ol { padding-left: 1.4rem; }
 .measurement-help a { text-decoration: underline; }
+.body-fat-guide figure { margin: 12px 0 0; }
+.body-fat-guide img { display: block; width: 100%; height: auto; border-radius: 8px; }
+.body-fat-guide a { display: inline-flex; min-height: 44px; align-items: center; }
 .body-fat-preview { display: grid; gap: 4px; border-radius: 10px; padding: 12px; background: #fff1e7; color: #872e0b; }
 .body-fat-preview output { font-weight: 650; }
 .workout-education { padding: 18px; border-radius: 14px; background: #fff8f1; line-height: 1.55; }
