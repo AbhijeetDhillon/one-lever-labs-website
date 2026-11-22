@@ -11,10 +11,10 @@
   <meta name="theme-color" content="#f7f7f5">
   <script defer src="install.js"></script>
   <link rel="stylesheet" href="../styles.css?v=5">
-  <link rel="stylesheet" href="workout.css?v=6">
-  <script defer src="../oll-config.js?v=7"></script>
+  <link rel="stylesheet" href="workout.css?v=7">
+  <script defer src="../oll-config.js?v=8"></script>
   <script defer src="../oll-services.js?v=2"></script>
-  <script defer src="bmr.js?v=4"></script>
+  <script defer src="bmr.js?v=5"></script>
 </head>
 <body class="fitness bmr-page">
   <a class="skip" href="#main">Skip to content</a>
@@ -37,14 +37,7 @@
           </label>
           <fieldset id="known"><label>Body fat (%) <input id="body-fat" type="number" inputmode="decimal" min="1" max="80" step="any" required placeholder="20"></label></fieldset>
           <fieldset id="range" hidden disabled>
-            <details class="measurement-help body-fat-guide">
-              <summary>View body-fat guide</summary>
-              <p>AI illustrations for rough comparisons. Muscle mass and fat distribution affect how the same percentage looks.</p>
-              <figure>
-                <img src="body-fat-guide.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="Adult body-fat examples. Men at 10–19%, 20–29%, 30–39%, and 40% or higher. Women at 20–29%, 30–39%, 40–49%, and 50% or higher.">
-              </figure>
-              <p id="body-fat-reference" hidden><a id="body-fat-reference-link" target="_blank" rel="noopener">Open full-size guide</a></p>
-            </details>
+            <button type="button" id="open-body-fat-guide" aria-haspopup="dialog">View body-fat guide</button>
             <p class="fitness-note">Enter your lowest and highest plausible estimates. Use recent measurements when available.</p>
             <div class="pair"><label>Low body fat (%) <input id="fat-low" type="number" inputmode="decimal" min="1" max="80" step="any" required placeholder="20"></label><label>High body fat (%) <input id="fat-high" type="number" inputmode="decimal" min="1" max="80" step="any" required placeholder="25"></label></div>
           </fieldset>
@@ -94,6 +87,25 @@
         <p class="fitness-note" id="bmr-method">Uses <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12425712/">Katch–McArdle</a> and the <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10453806/">Jackson–Pollock three-site method</a> for caliper inputs. Your measurements stay in this page.</p>
       </section>
     </div>
+    <dialog class="body-fat-guide" id="body-fat-guide" aria-labelledby="body-fat-guide-title" aria-describedby="body-fat-guide-note">
+      <div class="body-fat-guide-header">
+        <h2 id="body-fat-guide-title">Body-fat guide</h2>
+        <form method="dialog"><button type="submit" autofocus>Close</button></form>
+      </div>
+      <div class="body-fat-guide-content">
+        <p class="fitness-note" id="body-fat-guide-note">AI-generated photo examples for rough comparison. The same body-fat percentage can look different from person to person.</p>
+        <div class="body-fat-gallery">
+          <figure>
+            <figcaption><span>Men</span><a href="body-fat-guide.webp?v=2" target="_blank" rel="noopener" aria-label="Full size men's guide">Full size ↗</a></figcaption>
+            <img src="body-fat-guide.webp?v=2" width="1536" height="1024" loading="lazy" decoding="async" alt="Six adult male body-fat examples, cropped below the neck. Top row: 10–14%, 15–19%, 20–24%. Bottom row: 25–34%, 35–44%, 45% or higher.">
+          </figure>
+          <figure>
+            <figcaption><span>Women</span><a href="body-fat-guide-women.webp" target="_blank" rel="noopener" aria-label="Full size women's guide">Full size ↗</a></figcaption>
+            <img src="body-fat-guide-women.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="Six adult female body-fat examples, cropped below the neck. Top row: 15–19%, 20–24%, 25–29%. Bottom row: 30–39%, 40–49%, 50% or higher.">
+          </figure>
+        </div>
+      </div>
+    </dialog>
     <section class="fitness-panel oll-updates" data-updates="bmr"></section>
   </main>
 </body>

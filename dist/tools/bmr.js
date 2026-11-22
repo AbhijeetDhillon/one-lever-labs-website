@@ -142,11 +142,7 @@
       $("calc-error").hidden = false;
     }
   });
-  const reference = window.ollConfig?.bodyFatReferenceUrl;
-  if (reference) {
-    $("body-fat-reference-link").href = reference;
-    $("body-fat-reference").hidden = false;
-  }
+  $("open-body-fat-guide").addEventListener("click", () => $("body-fat-guide").showModal());
   $("rest-day").checked = new URLSearchParams(location.search).get("rest") === "1";
   updateInputs();
 })();

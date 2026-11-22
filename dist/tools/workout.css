@@ -158,9 +158,39 @@
 .measurement-help p, .measurement-help ol { margin: 8px 0 0; }
 .measurement-help ol { padding-left: 1.4rem; }
 .measurement-help a { text-decoration: underline; }
-.body-fat-guide figure { margin: 12px 0 0; }
-.body-fat-guide img { display: block; width: 100%; height: auto; border-radius: 8px; }
-.body-fat-guide a { display: inline-flex; min-height: 44px; align-items: center; }
+#open-body-fat-guide { justify-self: start; }
+.body-fat-guide {
+  width: min(1080px, calc(100% - 24px));
+  max-width: none;
+  max-height: calc(100dvh - 24px);
+  padding: 0;
+  border: 1px solid #e7e5e2;
+  border-radius: 18px;
+  background: white;
+  color: inherit;
+  overscroll-behavior: contain;
+}
+.body-fat-guide::backdrop { background: #171411a6; }
+.body-fat-guide-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px clamp(12px, 3vw, 24px);
+  border-bottom: 1px solid #e7e5e2;
+  background: white;
+}
+.fitness .body-fat-guide-header h2 { margin: 0; }
+.body-fat-guide-content { padding: clamp(12px, 3vw, 24px); }
+.body-fat-guide-content > p { margin: 0 0 8px; }
+.body-fat-gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 16px; }
+.body-fat-guide figure { margin: 0; }
+.body-fat-guide figcaption { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-weight: 650; }
+.body-fat-guide img { display: block; width: 100%; height: auto; border: 1px solid #e7e5e2; border-radius: 10px; }
+.body-fat-guide a { display: inline-flex; min-height: 44px; align-items: center; color: #923505; font-size: .875rem; text-decoration: underline; }
 .body-fat-preview { display: grid; gap: 4px; border-radius: 10px; padding: 12px; background: #fff1e7; color: #872e0b; }
 .body-fat-preview output { font-weight: 650; }
 .workout-education { padding: 18px; border-radius: 14px; background: #fff8f1; line-height: 1.55; }
