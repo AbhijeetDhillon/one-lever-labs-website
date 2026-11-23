@@ -6,7 +6,7 @@ function checkWorkbookSetup() {
   workbookFields_(settings.formId);
   workbookAttachment_(settings.fileIds.gym, 'gym');
   workbookAttachment_(settings.fileIds.home, 'home');
-  return { allowedOrigins: settings.origins, dailyEmailRemaining: MailApp.getRemainingDailyQuota() };
+  return { allowedOrigins: settings.origins, dailyEmailLimit: workbookDailyLimit };
 }
 
 function doPost(event) {
@@ -59,8 +59,7 @@ function doPost(event) {
     const usageKey = download ? 'WORKBOOK_DAILY_DOWNLOAD_USAGE' : 'WORKBOOK_DAILY_USAGE';
     const dayUsage = JSON.parse(properties.getProperty(usageKey) || '{}');
     const used = dayUsage.date === today ? dayUsage.count : 0;
-    if ((!download && (used >= workbookDailyLimit || MailApp.getRemainingDailyQuota() < 1))
-        || (download && !previous && used >= workbookDailyLimit)) {
+    if (used >= workbookDailyLimit && (!download || !previous)) {
       console.warn('Workbook delivery reached its daily limit.');
       return workbookReply_(origin, nonce, 'busy');
     }
@@ -92,7 +91,7 @@ function doPost(event) {
 
     stage = 'update the daily send count';
     properties.setProperty(usageKey, JSON.stringify({ date: today, count: used + 1 }));
-    stage = 'send the email through MailApp';
+    stage = 'send the email through Gmail';
     deliveryAttempt = { at: new Date().toISOString(), plan: planName, outcome: 'failed' };
     sendWorkbookEmail_(email, planName, attachment);
     deliveryAttempt.outcome = 'accepted';
@@ -123,20 +122,50 @@ function recordWorkbookDelivery_(attempt) {
 }
 
 function sendWorkbookEmail_(email, planName, attachment) {
-  MailApp.sendEmail({
-    to: email,
-    subject: `Your free 12-week ${planName} workout workbook`,
-    body: [
-      `Here is the ${planName} workbook you requested. It has one sheet. Swipe across the 12 week columns and use the dropdown beside each exercise to choose an alternative for that week.`,
-      'The workout plan is adapted from the exercise protocol in Andrew Huberman’s book, Protocols: An Operating Manual for the Human Body. I highly recommend the book for a deeper look at the exercises and the reasoning behind the program.',
-      'Buy Protocols on Amazon (paid link): https://www.amazon.com/dp/1668032147?tag=oneleverlabs-20',
-      'As an Amazon Associate I earn from qualifying purchases.',
-      'One Lever Labs'
-    ].join('\n\n'),
-    name: 'One Lever Labs',
-    attachments: [attachment]
-  });
-  console.info(`MailApp accepted the ${planName} workbook email for sending.`);
+  const intro = `Your 12-week ${planName} workout workbook is attached.`;
+  const credit = 'Adapted from Andrew Huberman’s';
+  const book = 'Protocols';
+  const company = 'One Lever Labs';
+  const body = `${intro}\n\n${credit} ${book}.\n\n${company}`;
+  const html = `<p>${intro}</p><p>${credit} <a href="https://www.hubermanlab.com/protocols-book">${book}</a>.</p><p>${company}</p>`;
+  const mixed = 'workbook-' + Utilities.getUuid();
+  const alternative = 'body-' + Utilities.getUuid();
+  const message = [
+    `From: Abhijeet from ${company} <abhijeet@oneleverlabs.com>`,
+    `To: ${email}`,
+    `Subject: Your free 12-week ${planName} workout workbook`,
+    'Date: ' + new Date().toUTCString().replace('GMT', '+0000'),
+    'MIME-Version: 1.0',
+    `Content-Type: multipart/mixed; boundary="${mixed}"`,
+    '',
+    `--${mixed}`,
+    `Content-Type: multipart/alternative; boundary="${alternative}"`,
+    '',
+    `--${alternative}`,
+    workbookMailPart_('text/plain; charset=UTF-8', Utilities.newBlob(body).getBytes()),
+    `--${alternative}`,
+    workbookMailPart_('text/html; charset=UTF-8', Utilities.newBlob(html).getBytes()),
+    `--${alternative}--`,
+    `--${mixed}`,
+    workbookMailPart_('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', attachment.getBytes(), [
+      `Content-Disposition: attachment; filename="${attachment.getName()}"`
+    ]),
+    `--${mixed}--`,
+    ''
+  ].join('\r\n');
+  Gmail.Users.Messages.send({ raw: Utilities.base64EncodeWebSafe(message) }, 'me');
+  console.info(`Gmail accepted the ${planName} workbook email for sending.`);
+}
+
+function workbookMailPart_(contentType, bytes, headers = []) {
+  const encoded = Utilities.base64Encode(bytes);
+  return [
+    `Content-Type: ${contentType}`,
+    'Content-Transfer-Encoding: base64',
+    ...headers,
+    '',
+    ...(encoded.match(/.{1,76}/g) || [])
+  ].join('\r\n');
 }
 
 function workbookSettings_() {
