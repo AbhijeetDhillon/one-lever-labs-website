@@ -846,6 +846,42 @@ h1 em, h2 em {
   text-underline-offset: 0.2em;
 }
 
+.privacy-policy {
+  max-width: 44rem;
+  padding-block: clamp(2.5rem, 6vw, 5rem);
+  line-height: 1.65;
+}
+
+.privacy-policy h1 {
+  margin-bottom: 1rem;
+  font-size: clamp(2.375rem, 6vw, 3.75rem);
+}
+
+.privacy-policy > p {
+  color: var(--muted);
+}
+
+.privacy-policy section {
+  margin-top: 1.75rem;
+}
+
+.privacy-policy h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.privacy-policy p + p {
+  margin-top: 0.75rem;
+}
+
+.privacy-policy a {
+  color: var(--accent-text);
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 .directory-page {
   display: flex;
   min-height: 100vh;
